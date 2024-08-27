@@ -5,7 +5,7 @@
         "ecmaVersion": 6,
         "sourceType": "module"
     },
-    "plugins": ["@typescript-eslint", "plugin:@typescript-eslint/recommended"],
+    "plugins": ["@typescript-eslint"],
     "rules": {
         "@typescript-eslint/naming-convention": [
             "warn",

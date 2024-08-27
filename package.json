@@ -1,10 +1,15 @@
 {
     "name": "ai-commit-messege",
     "displayName": "ai-commit-messege",
+    "publisher": "Its-Satyajit",
     "description": "",
     "version": "0.0.1",
     "engines": {
         "vscode": "^1.92.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Its-Satyajit/ai-commit-messege.git"
     },
     "categories": [
         "Other"
@@ -14,7 +19,7 @@
         "onStartupFinished",
         "onLanguage:git-commit"
     ],
-    "icon": "assets/images/icon256.png",
+    "icon": "extension/assets/icons/images/logo256.png",
     "main": "./dist/extension.js",
     "contributes": {
         "configuration": {
@@ -80,8 +85,8 @@
                 "command": "extension.generateCommitMessage",
                 "title": "Generate Commit Message",
                 "icon": {
-                    "dark": "assets/icons/dark.svg",
-                    "light": "assets/icons/light.svg"
+                    "dark": "extension/assets/icons/dark.svg",
+                    "light": "extension/assets/icons/light.svg"
                 }
             }
         ],
@@ -117,6 +122,7 @@
         "@typescript-eslint/parser": "^7.18.0 ",
         "@vscode/test-cli": "^0.0.10",
         "@vscode/test-electron": "^2.4.1",
+        "@vscode/vsce": "^3.0.0",
         "esbuild": "^0.23.1",
         "eslint": "^8.57.0",
         "npm-run-all": "^4.1.5",
