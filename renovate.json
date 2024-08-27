@@ -1,0 +1,29 @@
+{
+    "extends": ["config:base"],
+    "packageRules": [
+        {
+            "matchDepTypes": ["dependencies", "devDependencies"],
+            "matchUpdateTypes": ["major"],
+            "automergeType": "pr",
+            "automerge": false
+        },
+        {
+            "matchDepTypes": ["dependencies"],
+            "matchUpdateTypes": ["minor", "patch"],
+            "automergeType": "pr",
+            "automerge": true
+        },
+        {
+            "matchDepTypes": ["devDependencies"],
+            "matchUpdateTypes": ["minor", "patch"],
+            "automergeType": "pr",
+            "automerge": true
+        }
+    ],
+    "dependencyDashboard": false,
+    "schedule": ["before 9am on Monday", "after 5pm on Friday", "every weekend"],
+    "timezone": "Asia/Kolkata",
+    "branchPrefix": "renovate/",
+    "rebaseWhen": "behind-base-branch",
+    "labels": ["dependencies", "auto-update"]
+}
