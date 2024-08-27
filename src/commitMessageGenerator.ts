@@ -20,7 +20,6 @@ function loadConfig(): Config {
         model: config.get('model', ''),
         temperature: config.get('temperature', 0.7),
         maxTokens: config.get('maxTokens', 5000),
-        // stream: config.get('stream', false),
         stream: false,
         apiKey: config.get('apiKey', ''),
         types: config.get('types', []),
@@ -59,6 +58,19 @@ function getGitChanges(): string | null {
         }
         return null;
     }
+}
+
+function detectBreakingChanges(changes: string): boolean {
+    const breakingChangePatterns = [
+        /BREAKING CHANGE/i,
+        /major/i,
+        /removes? (.*) (features|functions|endpoints|methods|APIs)/i,
+        /incompatible/i,
+        /deprecated/i,
+        /changes? (.*) that (break|remove)/i,
+    ];
+
+    return breakingChangePatterns.some((pattern) => pattern.test(changes));
 }
 
 function generateCommitMessage(changes: string, config: Config): string {
@@ -107,8 +119,22 @@ async function sendCommitMessage(commitMessage: string, config: Config): Promise
             },
         });
 
-        const message = response.data.choices[0].message.content.trim();
-        return message;
+        // console.log('API Response:', response.data);
+
+        if (Array.isArray(response.data.choices) && response.data.choices.length > 0) {
+            const message = response.data.choices[0]?.message?.content?.trim();
+            if (message) {
+                return message;
+            } else {
+                console.error('Invalid message structure in API response.');
+                vscode.window.showErrorMessage(
+                    'Failed to generate commit message: Invalid message structure in API response.'
+                );
+            }
+        } else {
+            console.error('No choices found in API response.');
+            vscode.window.showErrorMessage('Failed to generate commit message: No choices found in API response.');
+        }
     } catch (error) {
         if (error instanceof Error) {
             console.error(`Error sending commit message: ${error.message}`);
@@ -117,8 +143,8 @@ async function sendCommitMessage(commitMessage: string, config: Config): Promise
             console.error('Error sending commit message: An unknown error occurred.');
             vscode.window.showErrorMessage('Failed to generate commit message: An unknown error occurred.');
         }
-        return null;
     }
+    return null;
 }
 
 export async function main(): Promise<string | null> {
