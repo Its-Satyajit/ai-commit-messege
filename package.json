@@ -1,0 +1,128 @@
+{
+    "name": "ai-commit-messege",
+    "displayName": "ai-commit-messege",
+    "description": "",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.92.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onCommand:extension.generateCommitMessage",
+        "onStartupFinished",
+        "onLanguage:git-commit"
+    ],
+    "main": "./dist/extension.js",
+    "contributes": {
+        "configuration": {
+            "title": "Commit Message Generator",
+            "properties": {
+                "commitMessageGenerator.apiUrl": {
+                    "type": "string",
+                    "default": "http://127.0.0.1:1234/v1/chat/completions",
+                    "description": "API URL for the commit message generator."
+                },
+                "commitMessageGenerator.model": {
+                    "type": "string",
+                    "default": "bartowski/Meta-Llama-3.1-8B-Instruct-GGUF/Meta-Llama-3.1-8B-Instruct-IQ3_XS.gguf",
+                    "description": "Model used for generating commit messages."
+                },
+                "commitMessageGenerator.temperature": {
+                    "type": "number",
+                    "default": 0.7,
+                    "description": "Temperature for the model output."
+                },
+                "commitMessageGenerator.maxTokens": {
+                    "type": "number",
+                    "default": 5000,
+                    "description": "Maximum tokens for the model output."
+                },
+                "commitMessageGenerator.stream": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Whether to stream the model output."
+                },
+                "commitMessageGenerator.apiKey": {
+                    "type": "string",
+                    "default": "",
+                    "description": "API key for the commit message generator."
+                },
+                "commitMessageGenerator.types": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": [
+                        "build",
+                        "chore",
+                        "ci",
+                        "docs",
+                        "style",
+                        "refactor",
+                        "perf",
+                        "test"
+                    ],
+                    "description": "List of commit types."
+                },
+                "commitMessageGenerator.scopes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": [
+                        "parser",
+                        "ui"
+                    ],
+                    "description": "List of commit scopes."
+                }
+            }
+        },
+        "commands": [
+            {
+                "command": "extension.generateCommitMessage",
+                "title": "Generate Commit Message"
+            }
+        ],
+        "menus": {
+            "scm/title": [
+                {
+                    "command": "extension.generateCommitMessage",
+                    "group": "navigation",
+                    "when": "scmProvider == git"
+                }
+            ]
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "pnpm run package",
+        "compile": "pnpm run check-types && pnpm run lint && node esbuild.js",
+        "watch": "npm-run-all -p watch:*",
+        "watch:esbuild": "node esbuild.js --watch",
+        "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+        "package": "pnpm run check-types && pnpm run lint && node esbuild.js --production",
+        "compile-tests": "tsc -p . --outDir out",
+        "watch-tests": "tsc -p . -w --outDir out",
+        "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
+        "check-types": "tsc --noEmit",
+        "lint": "eslint src --ext ts",
+        "test": "vscode-test"
+    },
+    "devDependencies": {
+        "@types/mocha": "^10.0.7",
+        "@types/node": "~20.16.1",
+        "@types/vscode": "^1.92.0",
+        "@typescript-eslint/eslint-plugin": "^7.18.0 ",
+        "@typescript-eslint/parser": "^7.18.0 ",
+        "@vscode/test-cli": "^0.0.10",
+        "@vscode/test-electron": "^2.4.1",
+        "esbuild": "^0.23.1",
+        "eslint": "^8.57.0",
+        "npm-run-all": "^4.1.5",
+        "typescript": "^5.5.4"
+    },
+    "dependencies": {
+        "axios": "^1.7.5"
+    }
+}
