@@ -14,40 +14,41 @@
         "onStartupFinished",
         "onLanguage:git-commit"
     ],
+    "icon": "assets/images/icon256.png",
     "main": "./dist/extension.js",
     "contributes": {
         "configuration": {
-            "title": "Commit Message Generator",
+            "title": "Ai Commit Message",
             "properties": {
                 "commitMessageGenerator.apiUrl": {
                     "type": "string",
                     "default": "http://127.0.0.1:1234/v1/chat/completions",
-                    "description": "API URL for the commit message generator."
+                    "description": "The URL of the API endpoint used to generate commit messages. Ensure this URL is correctly pointing to your message generation service."
                 },
                 "commitMessageGenerator.model": {
                     "type": "string",
                     "default": "bartowski/Meta-Llama-3.1-8B-Instruct-GGUF/Meta-Llama-3.1-8B-Instruct-IQ3_XS.gguf",
-                    "description": "Model used for generating commit messages."
+                    "description": "The model identifier used for generating commit messages. Ensure the model specified is available and correctly configured."
                 },
                 "commitMessageGenerator.temperature": {
                     "type": "number",
                     "default": 0.7,
-                    "description": "Temperature for the model output."
+                    "description": "The temperature setting for the model output, which controls the randomness of the generated commit message. Higher values produce more diverse outputs."
                 },
                 "commitMessageGenerator.maxTokens": {
                     "type": "number",
                     "default": 5000,
-                    "description": "Maximum tokens for the model output."
+                    "description": "The maximum number of tokens (words or pieces of words) that the model is allowed to generate in a commit message."
                 },
                 "commitMessageGenerator.stream": {
                     "type": "boolean",
                     "default": false,
-                    "description": "Whether to stream the model output."
+                    "description": "Indicates whether the model should stream the response in real-time. When enabled, you might receive parts of the message as it's being generated."
                 },
                 "commitMessageGenerator.apiKey": {
                     "type": "string",
-                    "default": "",
-                    "description": "API key for the commit message generator."
+                    "default": "your_api_key",
+                    "description": "The API key required to authenticate requests to the commit message generation service. Ensure this key is kept secure and private."
                 },
                 "commitMessageGenerator.types": {
                     "type": "array",
@@ -64,7 +65,7 @@
                         "perf",
                         "test"
                     ],
-                    "description": "List of commit types."
+                    "description": "A list of commit types that the extension will recognize and use to categorize commit messages. You can customize this list based on your project's needs."
                 },
                 "commitMessageGenerator.scopes": {
                     "type": "array",
@@ -75,14 +76,18 @@
                         "parser",
                         "ui"
                     ],
-                    "description": "List of commit scopes."
+                    "description": "A list of commit scopes that the extension will recognize and include in commit messages. Customize this list to align with the scopes relevant to your project."
                 }
             }
         },
         "commands": [
             {
                 "command": "extension.generateCommitMessage",
-                "title": "Generate Commit Message"
+                "title": "Generate Commit Message",
+                "icon": {
+                    "dark": "assets/icons/dark.svg",
+                    "light": "assets/icons/light.svg"
+                }
             }
         ],
         "menus": {
