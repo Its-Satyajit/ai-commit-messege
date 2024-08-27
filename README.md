@@ -38,32 +38,26 @@ To make the most out of the AI Commit Message extension, you need to configure i
 
 ### Configuration Options
 
--   **API URL (`commitMessageGenerator.apiUrl`)**:  
-    The endpoint URL for the API used to generate commit messages. Make sure this URL points to a valid and active message generation service.  
+-   **API URL (`commitMessageGenerator.apiUrl`)**:
+    The endpoint URL for the API used to generate commit messages. Make sure this URL points to a valid and active message generation service.
     _Default:_ `http://127.0.0.1:1234/v1/chat/completions`
-
--   **Model Identifier (`commitMessageGenerator.model`)**:  
-    Specifies the AI model used for generating commit messages. Ensure the specified model is correctly set up.  
+-   **Model Identifier (`commitMessageGenerator.model`)**:
+    Specifies the AI model used for generating commit messages. Ensure the specified model is correctly set up.
     _Default:_ `bartowski/Meta-Llama-3.1-8B-Instruct-GGUF/Meta-Llama-3.1-8B-Instruct-IQ3_XS.gguf`
-
--   **Temperature Setting (`commitMessageGenerator.temperature`)**:  
-    Controls the variability of the generated commit messages. Higher values result in more diverse messages.  
+-   **Temperature Setting (`commitMessageGenerator.temperature`)**:
+    Controls the variability of the generated commit messages. Higher values result in more diverse messages.
     _Default:_ `0.7`
-
--   **Maximum Tokens (`commitMessageGenerator.maxTokens`)**:  
-    Limits the number of tokens (words or sub-words) the AI can use to generate a commit message.  
+-   **Maximum Tokens (`commitMessageGenerator.maxTokens`)**:
+    Limits the number of tokens (words or sub-words) the AI can use to generate a commit message.
     _Default:_ `5000`
-
--   **API Key (`commitMessageGenerator.apiKey`)**:  
-    Required for authenticating API requests. Make sure to keep this key secure.  
+-   **API Key (`commitMessageGenerator.apiKey`)**:
+    Required for authenticating API requests. Make sure to keep this key secure.
     _Default:_ `your_api_key`
-
--   **Commit Types (`commitMessageGenerator.types`)**:  
-    A customizable list of commit types recognized by the extension. You can modify this list based on your project requirements.  
+-   **Commit Types (`commitMessageGenerator.types`)**:
+    A customizable list of commit types recognized by the extension. You can modify this list based on your project requirements.
     _Default:_ `["build", "chore", "ci", "docs", "style", "refactor", "perf", "test"]`
-
--   **Commit Scopes (`commitMessageGenerator.scopes`)**:  
-    A customizable list of commit scopes that the extension recognizes. This can be tailored to fit the specific scopes of your project.  
+-   **Commit Scopes (`commitMessageGenerator.scopes`)**:
+    A customizable list of commit scopes that the extension recognizes. This can be tailored to fit the specific scopes of your project.
     _Default:_ `["parser", "ui"]`
 
 ## How to Use AI Commit Message Extension
@@ -81,23 +75,20 @@ The AI Commit Message extension fetches the current changes in your repository, 
 
 ## Commands and Shortcuts for AI Commit Message Extension
 
--   **Generate Commit Message (`extension.generateCommitMessage`)**:  
+-   **Generate Commit Message (`extension.generateCommitMessage`)**:
     This command analyzes your Git changes and generates a commit message using AI. It can be accessed via the Command Palette or the Source Control menu.
 
 ## Troubleshooting AI Commit Message Extension
 
 ### Common Problems and Solutions
 
--   **No Active Git Repository Found**:  
+-   **No Active Git Repository Found**:
     Make sure your workspace has an active Git repository. This extension needs a Git repository to generate commit messages.
-
--   **Failed to Fetch Git Changes**:  
+-   **Failed to Fetch Git Changes**:
     This error usually occurs if the extension cannot access Git changes. Ensure that Git is installed correctly and that there are changes in your repository.
-
--   **API Key is Missing**:  
+-   **API Key is Missing**:
     The extension requires an API key to authenticate with the message generation service. Make sure to configure the API key in the settings.
-
--   **No Changes Detected**:  
+-   **No Changes Detected**:
     If there are no changes in your Git repository, the extension will not generate a commit message. Ensure you have made and staged changes before generating a message.
 
 ### Debugging Tips
