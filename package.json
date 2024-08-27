@@ -136,7 +136,10 @@
         "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
         "check-types": "tsc --noEmit",
         "lint": "eslint src --ext ts",
-        "test": "vscode-test"
+        "test": "vscode-test",
+        "publish:patch": "npx vsce publish patch",
+        "publish:minor": "npx vsce publish minor",
+        "publish:major": "npx vsce publish major"
     },
     "devDependencies": {
         "@types/mocha": "^10.0.7",
