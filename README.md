@@ -1,125 +1,77 @@
-# AI Commit Message VS Code Extension - User Guide
+# AI Commit Message VS Code Extension
 
-## Table of Contents
+Welcome to the **AI Commit Message** extension for Visual Studio Code! This extension helps you generate clear and concise commit messages using AI, ensuring your commit history is structured and easy to understand.
 
-1. [Introduction to AI Commit Message Extension](#introduction-to-ai-commit-message-extension)
-2. [How to Install AI Commit Message Extension](#how-to-install-ai-commit-message-extension)
-3. [How to Configure AI Commit Message Extension](#how-to-configure-ai-commit-message-extension)
-4. [How to Use AI Commit Message Extension](#how-to-use-ai-commit-message-extension)
-5. [Commands and Shortcuts for AI Commit Message Extension](#commands-and-shortcuts-for-ai-commit-message-extension)
-6. [Troubleshooting AI Commit Message Extension](#troubleshooting-ai-commit-message-extension)
-7. [Contributing to AI Commit Message Extension](#contributing-to-ai-commit-message-extension)
-8. [Frequently Asked Questions (FAQ)](#frequently-asked-questions-faq)
-9. [License Information](#license-information)
+## Features
 
-## Introduction to AI Commit Message Extension
+-   **Automated Commit Message Generation**: Automatically generates commit messages based on the changes in your Git repository.
+-   **Configurable Settings**: Customize the AI model, API URL, commit message format, and more according to your needs.
+-   **Integration with VS Code**: Seamlessly integrates into the VS Code environment, adding a button to the Source Control tab for easy commit message generation.
 
-The **AI Commit Message** extension for Visual Studio Code automates the creation of commit messages for your Git repositories by leveraging artificial intelligence. This VS Code extension analyzes your code changes and generates commit messages that adhere to the [Conventional Commits](https://www.conventionalcommits.org/) standard, making your commit history more consistent and readable.
+## Getting Started
 
-## How to Install AI Commit Message Extension
+### Installation
+
+1. **Install from VS Code Marketplace**: You can install the extension directly from the [Visual Studio Code Marketplace](https://marketplace.visualstudio.com/items?itemName=Its-Satyajit.ai-commit-messege).
+
+2. **Install from GitHub**: Alternatively, you can download the extension from the [GitHub releases page](https://github.com/Its-Satyajit/ai-commit-messege/releases) and install it manually.
 
 ### Prerequisites
 
--   **Visual Studio Code**: Version `1.92.0` or higher.
--   **Git**: Ensure Git is set up and working in your development environment.
-
-### Installation Steps
-
-1. Open **Visual Studio Code**.
-2. Navigate to the **Extensions** view by clicking on the Extensions icon in the Activity Bar.
-3. In the search bar, type **"AI Commit Message"**.
-4. Click **Install** to add the AI Commit Message extension to your VS Code.
-
-Alternatively, you can install the extension manually by downloading the `.vsix` file from the [GitHub repository](#) and selecting **Install from VSIX...** in the Extensions view.
-
-## How to Configure AI Commit Message Extension
-
-To make the most out of the AI Commit Message extension, you need to configure it properly. Configuration options can be accessed by navigating to `File > Preferences > Settings` or pressing `Ctrl + ,` (or `Cmd + ,` on macOS) in Visual Studio Code and searching for **"AI Commit Message"**.
-
-### Configuration Options
-
--   **API URL (`commitMessageGenerator.apiUrl`)**:
-    The endpoint URL for the API used to generate commit messages. Make sure this URL points to a valid and active message generation service.
-    _Default:_ `http://127.0.0.1:1234/v1/chat/completions`
--   **Model Identifier (`commitMessageGenerator.model`)**:
-    Specifies the AI model used for generating commit messages. Ensure the specified model is correctly set up.
-    _Default:_ `bartowski/Meta-Llama-3.1-8B-Instruct-GGUF/Meta-Llama-3.1-8B-Instruct-IQ3_XS.gguf`
--   **Temperature Setting (`commitMessageGenerator.temperature`)**:
-    Controls the variability of the generated commit messages. Higher values result in more diverse messages.
-    _Default:_ `0.7`
--   **Maximum Tokens (`commitMessageGenerator.maxTokens`)**:
-    Limits the number of tokens (words or sub-words) the AI can use to generate a commit message.
-    _Default:_ `5000`
--   **API Key (`commitMessageGenerator.apiKey`)**:
-    Required for authenticating API requests. Make sure to keep this key secure.
-    _Default:_ `your_api_key`
--   **Commit Types (`commitMessageGenerator.types`)**:
-    A customizable list of commit types recognized by the extension. You can modify this list based on your project requirements.
-    _Default:_ `["build", "chore", "ci", "docs", "style", "refactor", "perf", "test"]`
--   **Commit Scopes (`commitMessageGenerator.scopes`)**:
-    A customizable list of commit scopes that the extension recognizes. This can be tailored to fit the specific scopes of your project.
-    _Default:_ `["parser", "ui"]`
+-   **Visual Studio Code**: Ensure you have Visual Studio Code installed. The extension supports VS Code version 1.92.0 and above.
+-   **Git**: Make sure Git is installed and properly configured in your environment.
+-   **Local LLM or API Setup**: To generate commit messages using AI, you'll need an API endpoint or a local language model (LLM). For an easy local LLM setup, consider using [LM Studio](https://lmstudio.ai/).
 
 ## How to Use AI Commit Message Extension
 
 ### Step-by-Step Guide to Generate a Commit Message
 
-1. **Ensure Git Changes**: Make sure you have staged or unstaged changes in your Git repository.
-2. **Open Command Palette**: Press `Ctrl + Shift + P` (or `Cmd + Shift + P` on macOS) to open the Command Palette.
-3. **Run Command**: Type **"Generate Commit Message"** and select the `Generate Commit Message` command.
-4. **View Generated Message**: The AI model will analyze the changes, generate a commit message, and populate it in the Git input box in VS Code.
+1. **Ensure Git Changes**: Make sure you have staged or unstaged changes in your Git repository. The extension requires some changes to generate a meaningful commit message.
+
+2. **Open the Source Control Tab**: Navigate to the Source Control tab in Visual Studio Code. This is where you manage your Git repositories and commit changes.
+
+3. **Generate Commit Message**: In the Source Control tab, you will see a **Generate Commit Message** button. Click this button to start the process of generating a commit message.
+
+4. **View Generated Message**: After clicking the button, the AI model will analyze the changes in your repository and generate a commit message. The generated commit message will automatically populate in the Git input box in VS Code, ready for you to review and commit.
 
 ### How the Extension Works
 
-The AI Commit Message extension fetches the current changes in your repository, analyzes the content to determine commit types and scopes, and uses the AI model to generate a Conventional Commit message. This process ensures that your commit messages are meaningful, structured, and follow a standard format.
+The AI Commit Message extension uses an AI model to analyze your Git repository's current changes. It identifies the type of changes made (such as bug fixes, new features, or documentation updates) and generates a commit message that adheres to the [Conventional Commits](https://www.conventionalcommits.org/) format. This ensures your commit history is structured, informative, and easy to understand.
 
-## Commands and Shortcuts for AI Commit Message Extension
+## Configuration Options
 
--   **Generate Commit Message (`extension.generateCommitMessage`)**:
-    This command analyzes your Git changes and generates a commit message using AI. It can be accessed via the Command Palette or the Source Control menu.
+The extension provides several configuration options to customize its behavior:
 
-## Troubleshooting AI Commit Message Extension
+-   **API URL** (`commitMessageGenerator.apiUrl`): The URL of the API endpoint used to generate commit messages. Ensure this URL is correctly pointing to your message generation service.
+-   **Model** (`commitMessageGenerator.model`): The model identifier used for generating commit messages. Ensure the model specified is available and correctly configured.
+-   **Temperature** (`commitMessageGenerator.temperature`): The temperature setting for the model output, which controls the randomness of the generated commit message. Higher values produce more diverse outputs.
+-   **Max Tokens** (`commitMessageGenerator.maxTokens`): The maximum number of tokens (words or pieces of words) that the model is allowed to generate in a commit message.
+-   **API Key** (`commitMessageGenerator.apiKey`): The API key required to authenticate requests to the commit message generation service. Ensure this key is kept secure and private.
+-   **Commit Types** (`commitMessageGenerator.types`): A list of commit types that the extension will recognize and use to categorize commit messages. You can customize this list based on your project's needs.
+-   **Commit Scopes** (`commitMessageGenerator.scopes`): A list of commit scopes that the extension will recognize and include in commit messages. Customize this list to align with the scopes relevant to your project.
 
-### Common Problems and Solutions
+### How to Configure
 
--   **No Active Git Repository Found**:
-    Make sure your workspace has an active Git repository. This extension needs a Git repository to generate commit messages.
--   **Failed to Fetch Git Changes**:
-    This error usually occurs if the extension cannot access Git changes. Ensure that Git is installed correctly and that there are changes in your repository.
--   **API Key is Missing**:
-    The extension requires an API key to authenticate with the message generation service. Make sure to configure the API key in the settings.
--   **No Changes Detected**:
-    If there are no changes in your Git repository, the extension will not generate a commit message. Ensure you have made and staged changes before generating a message.
+1. **Open Settings**: Go to `File` > `Preferences` > `Settings` (or use the shortcut `Ctrl + ,` on Windows/Linux or `Cmd + ,` on macOS).
 
-### Debugging Tips
+2. **Search for AI Commit Message**: In the search bar, type "AI Commit Message" to filter settings related to the extension.
 
-You can view detailed error messages and logs by opening the Output panel (`View > Output`) and selecting **AI Commit Message** from the drop-down menu.
+3. **Adjust Settings**: Modify the settings as per your requirements. Changes are automatically saved.
 
-## Contributing to AI Commit Message Extension
+## Troubleshooting
 
-Contributions are always welcome! If you find a bug, have a feature request, or want to contribute code, please [open an issue](#) or submit a pull request on the GitHub repository.
+-   **No Active Git Repository Found**: Ensure that you have a Git repository initialized and that it is opened in Visual Studio Code.
+-   **API Key Missing**: Make sure you have set the API key in the extension's settings if required by your setup.
+-   **Failed to Fetch Git Changes**: Check if your Git is properly configured and that there are actual changes in your repository.
 
-### Development Setup
+## Feedback and Support
 
-1. **Clone the Repository**: Clone the extension's GitHub repository to your local machine.
-2. **Install Dependencies**: Run `npm install` to set up the development environment.
-3. **Open in VS Code**: Open the project folder in Visual Studio Code.
-4. **Compile and Test**: Use `npm run watch` to compile the extension and press `F5` to open a new VS Code window with the extension loaded.
+If you encounter any issues or have suggestions for improvements, please visit the [GitHub Issues page](https://github.com/Its-Satyajit/ai-commit-messege/issues) to report them.
 
-## Frequently Asked Questions (FAQ)
+## Contributing
 
-### What is the Conventional Commits format?
+Welcome contributions! If you’d like to contribute, please fork the repository and create a pull request. For major changes, please open an issue first to discuss what you would like to change.
 
-The Conventional Commits format is a specification for writing consistent commit messages. It uses a structured format that includes a type, an optional scope, and a concise description, making it easier to automate versioning and generate changelogs.
+## License
 
-### Can I Use My Own AI Model with This Extension?
-
-Yes, you can configure the extension to use your own AI model by specifying the model identifier in the settings. Ensure the model is accessible via the provided API URL.
-
-### How Do I Update the AI Commit Message Extension?
-
-You can update the extension through the Extensions view in VS Code. If you've installed it manually, download the latest version from the [GitHub repository](#) and reinstall it.
-
-## License Information
-
-The AI Commit Message extension is licensed under the [MIT License](#). For more details, see the LICENSE file in the repository.
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/Its-Satyajit/ai-commit-messege/blob/main/LICENSE) file for more details.
