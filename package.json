@@ -1,6 +1,6 @@
 {
     "name": "ai-commit-messege",
-    "displayName": "ai-commit-messege",
+    "displayName": "Ai Commit Messege",
     "publisher": "Its-Satyajit",
     "description": "",
     "version": "0.0.1",
@@ -63,7 +63,15 @@
                         "style",
                         "refactor",
                         "perf",
-                        "test"
+                        "test",
+                        "feat",
+                        "fix",
+                        "revert",
+                        "security",
+                        "hotfix",
+                        "config",
+                        "optimization",
+                        "cleanup"
                     ],
                     "description": "A list of commit types that the extension will recognize and use to categorize commit messages. You can customize this list based on your project's needs."
                 },
@@ -74,7 +82,23 @@
                     },
                     "default": [
                         "parser",
-                        "ui"
+                        "ui",
+                        "api",
+                        "database",
+                        "auth",
+                        "config",
+                        "documentation",
+                        "tests",
+                        "build",
+                        "deployment",
+                        "styling",
+                        "performance",
+                        "security",
+                        "accessibility",
+                        "internationalization",
+                        "logging",
+                        "monitoring",
+                        "notifications"
                     ],
                     "description": "A list of commit scopes that the extension will recognize and include in commit messages. Customize this list to align with the scopes relevant to your project."
                 }
