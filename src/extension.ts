@@ -9,27 +9,29 @@ export function activate(context: vscode.ExtensionContext) {
         const repository = api?.repositories[0];
 
         if (!repository) {
-            vscode.window.showErrorMessage(
-                'No active Git repository found. Please open a repository to generate a commit message.'
-            );
+            vscode.window.showErrorMessage('No active Git repository found.');
             return;
         }
 
-        try {
-            const commitMessage = await main();
-            if (commitMessage) {
-                repository.inputBox.value = commitMessage;
-                vscode.window.showInformationMessage('Commit message generated and inserted.');
-            } else {
-                vscode.window.showInformationMessage('No changes detected or commit message generation failed.');
+        // Show progress notification
+        const progressOptions: vscode.ProgressOptions = {
+            location: vscode.ProgressLocation.Notification,
+            title: 'Generating commit message...',
+            cancellable: false,
+        };
+
+        await vscode.window.withProgress(progressOptions, async (progress) => {
+            try {
+                const commitMessage = await main();
+                if (commitMessage) {
+                    repository.inputBox.value = commitMessage;
+                } else {
+                    vscode.window.showInformationMessage('No changes detected or message generation failed.');
+                }
+            } catch (error) {
+                vscode.window.showErrorMessage(`An unexpected error occurred: ${(error as Error).message}`);
             }
-        } catch (error) {
-            if (error instanceof Error) {
-                vscode.window.showErrorMessage(`An unexpected error occurred: ${error.message}`);
-            } else {
-                vscode.window.showErrorMessage('An unexpected error occurred.');
-            }
-        }
+        });
     });
 
     context.subscriptions.push(disposable);
