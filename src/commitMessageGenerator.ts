@@ -73,36 +73,44 @@ function detectBreakingChanges(changes: string): boolean {
     return breakingChangePatterns.some((pattern) => pattern.test(changes));
 }
 
-function generateCommitMessage(changes: string, config: Config): string {
-    const description = changes.slice(0, 2000).replace(/\s+/g, ' ').trim();
-    let commitType = 'chore';
-    let commitScope = 'general';
-
-    for (const type of config.types) {
-        if (description.match(new RegExp(type, 'i'))) {
-            commitType = type;
-            break;
-        }
-    }
-
-    for (const scope of config.scopes) {
-        if (description.match(new RegExp(scope, 'i'))) {
-            commitScope = scope;
-            break;
-        }
-    }
-
-    return `${commitType}(${commitScope}): ${description}`;
+function estimateTokens(text: string): number {
+    // A rough estimate assuming each word is about 1.3 tokens on average.
+    return Math.ceil(text.split(/\s+/).length * 1.3);
 }
 
-async function sendCommitMessage(commitMessage: string, config: Config): Promise<string | null> {
+async function sendCommitMessage(changes: string, config: Config): Promise<string | null> {
     if (!config.apiKey) {
         console.error('API key is missing. Cannot send commit message.');
         vscode.window.showErrorMessage('API key is missing in the extension settings.');
         return null;
     }
 
-    const prompt = `Generate a commit message in the Conventional Commits format based on the following changes:\n\n${commitMessage}\n\nPlease provide only the commit message without any additional text.`;
+    const promptBase = `\n\nCommit Types: ${config.types.join(', ')}\nCommit Scopes: ${config.scopes.join(
+        ', '
+    )}\n\nPlease provide only the commit message without any additional text.`;
+
+    // Estimate tokens for the fixed parts
+    const staticTokenUsage =
+        estimateTokens(
+            `Given the following git changes and commit options, determine the appropriate commit type and scope, then generate a commit message in the Conventional Commits format:\n\nChanges:\n`
+        ) + estimateTokens(promptBase);
+
+    // Reserve tokens for the model's response
+    const responseTokenBuffer = 200; // Adjust this number as needed based on typical response length
+    const maxPromptLength = config.maxTokens - staticTokenUsage - responseTokenBuffer;
+
+    let trimmedChanges = changes;
+    if (estimateTokens(changes) > maxPromptLength) {
+        trimmedChanges =
+            changes.slice(0, Math.floor((changes.length * maxPromptLength) / estimateTokens(changes))) +
+            '\n\n... (truncated due to length)';
+        vscode.window.showWarningMessage(
+            'The diff is too large and has been truncated to fit the maximum token length for this message.'
+        );
+    }
+
+    const prompt = `Given the following git changes and commit options, determine the appropriate commit type and scope, then generate a commit message in the Conventional Commits format:\n\nChanges:\n${trimmedChanges}${promptBase}`;
+
     const payload = {
         model: config.model,
         messages: [{ role: 'system', content: prompt }],
@@ -118,8 +126,6 @@ async function sendCommitMessage(commitMessage: string, config: Config): Promise
                 'Content-Type': 'application/json',
             },
         });
-
-        // console.log('API Response:', response.data);
 
         if (Array.isArray(response.data.choices) && response.data.choices.length > 0) {
             const message = response.data.choices[0]?.message?.content?.trim();
@@ -152,8 +158,7 @@ export async function main(): Promise<string | null> {
     const changes = getGitChanges();
 
     if (changes) {
-        const commitMessage = generateCommitMessage(changes, config);
-        const message = await sendCommitMessage(commitMessage, config);
+        const message = await sendCommitMessage(changes, config);
         return message;
     } else {
         vscode.window.showInformationMessage('No changes detected in the Git repository.');
