@@ -40,11 +40,6 @@
                     "default": 5000,
                     "description": "The maximum number of tokens (words or pieces of words) that the model is allowed to generate in a commit message."
                 },
-                "commitMessageGenerator.stream": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Indicates whether the model should stream the response in real-time. When enabled, you might receive parts of the message as it's being generated."
-                },
                 "commitMessageGenerator.apiKey": {
                     "type": "string",
                     "default": "your_api_key",
