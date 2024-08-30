@@ -74,4 +74,4 @@ Welcome contributions! If you’d like to contribute, please fork the repository
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](https://github.com/Its-Satyajit/ai-commit-messege/blob/main/LICENSE) file for more details.
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/Its-Satyajit/ai-commit-messege/blob/master/LICENSE) file for more details.
