@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-import { main } from './commitMessageGenerator';
+import { generateCommitMessage } from './commitMessageGenerator';
 
 export function activate(context: vscode.ExtensionContext) {
     let disposable = vscode.commands.registerCommand('extension.generateCommitMessage', async () => {
@@ -13,7 +13,6 @@ export function activate(context: vscode.ExtensionContext) {
             return;
         }
 
-        // Show progress notification
         const progressOptions: vscode.ProgressOptions = {
             location: vscode.ProgressLocation.Notification,
             title: 'Generating commit message...',
@@ -22,7 +21,7 @@ export function activate(context: vscode.ExtensionContext) {
 
         await vscode.window.withProgress(progressOptions, async (progress) => {
             try {
-                const commitMessage = await main();
+                const commitMessage = await generateCommitMessage();
                 if (commitMessage) {
                     repository.inputBox.value = commitMessage;
                 } else {
