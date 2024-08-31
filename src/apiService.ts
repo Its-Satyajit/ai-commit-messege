@@ -29,7 +29,7 @@ Optionally, include:
 -   A optional **body** for more detailed information, especially for breaking changes, starting with \`BREAKING CHANGE:\`.
 -   A optional **footer** for metadata such as issue numbers, links, or additional notes.
 
-**Important:** Only return the commit message, formatted as specified, without any additional text or explanation.
+**IMPORTANT:** ONLY RETURN THE COMMIT MESSAGE, FORMATTED AS SPECIFIED, WITHOUT ANY ADDITIONAL TEXT OR EXPLANATION OR ANY SUGGESTION. DO NOT INCLUDE ANY OTHER TEXT.
 
 **Changes**
 
