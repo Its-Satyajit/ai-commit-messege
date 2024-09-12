@@ -3,7 +3,7 @@
     "displayName": "Ai Commit Messege",
     "publisher": "Its-Satyajit",
     "description": "",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "engines": {
         "vscode": "^1.92.0"
     },
