@@ -24,15 +24,15 @@ importers:
         specifier: 7.0.0
         version: 7.0.0
       simple-git:
-        specifier: ^3.27.0
+        specifier: ^3.25.0
         version: 3.27.0
     devDependencies:
       '@types/mocha':
         specifier: ^10.0.7
         version: 10.0.8
       '@types/node':
-        specifier: ~20.16.1
-        version: 20.16.5
+        specifier: ^20.16.15
+        version: 20.16.15
       '@types/vscode':
         specifier: ^1.92.0
         version: 1.93.0
@@ -61,7 +61,7 @@ importers:
         specifier: ^4.1.5
         version: 4.1.5
       typescript:
-        specifier: ^5.6.2
+        specifier: ^5.5.4
         version: 5.6.2
 
 packages:
@@ -349,8 +349,8 @@ packages:
   '@types/mocha@10.0.8':
     resolution: {integrity: sha512-HfMcUmy9hTMJh66VNcmeC9iVErIZJli2bszuXc6julh5YGuRb/W5OnkHjwLNYdFlMis0sY3If5SEAp+PktdJjw==}
 
-  '@types/node@20.16.5':
-    resolution: {integrity: sha512-VwYCweNo3ERajwy0IUlqqcyZ8/A7Zwa9ZP3MnENWcB11AejO+tLy3pu850goUW2FC/IJMdZUfKpX/yxL1gymCA==}
+  '@types/node@20.16.15':
+    resolution: {integrity: sha512-DV58qQz9dBMqVVn+qnKwGa51QzCD4YM/tQM16qLKxdf5tqz5W4QwtrMzjSTbabN1cFTSuyxVYBy+QWHjWW8X/g==}
 
   '@types/vscode@1.93.0':
     resolution: {integrity: sha512-kUK6jAHSR5zY8ps42xuW89NLcBpw1kOabah7yv38J8MyiYuOHxLQBi0e7zeXbQgVefDy/mZZetqEFC+Fl5eIEQ==}
@@ -880,6 +880,7 @@ packages:
   eslint@8.57.1:
     resolution: {integrity: sha512-ypowyDxpVSYpkXr9WPv2PAZCtNip1Mv5KTW0SCurXv/9iOpcrH9PaqUElksqEB6pChqHGDRCFTyrZlGhnLNGiA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
 
   espree@9.6.1:
@@ -2343,7 +2344,7 @@ snapshots:
 
   '@types/mocha@10.0.8': {}
 
-  '@types/node@20.16.5':
+  '@types/node@20.16.15':
     dependencies:
       undici-types: 6.19.8
 
