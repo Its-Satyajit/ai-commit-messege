@@ -231,7 +231,7 @@
     },
     "dependencies": {
         "@types/chalk": "^2.2.0",
-        "@types/diff": "^5.2.2",
+        "@types/diff": "^6.0.0",
         "axios": "^1.7.5",
         "chalk": "^5.3.0",
         "diff": "7.0.0",

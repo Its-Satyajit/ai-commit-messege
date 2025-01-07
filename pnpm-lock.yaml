@@ -12,8 +12,8 @@ importers:
         specifier: ^2.2.0
         version: 2.2.0
       '@types/diff':
-        specifier: ^5.2.2
-        version: 5.2.2
+        specifier: ^6.0.0
+        version: 6.0.0
       axios:
         specifier: ^1.7.5
         version: 1.7.7
@@ -34,7 +34,7 @@ importers:
         specifier: ~20.16.1
         version: 20.16.5
       '@types/vscode':
-        specifier: ^1.96.0
+        specifier: ^1.92.0
         version: 1.96.0
       '@typescript-eslint/eslint-plugin':
         specifier: '^7.18.0 '
@@ -340,8 +340,8 @@ packages:
     resolution: {integrity: sha512-1zzPV9FDe1I/WHhRkf9SNgqtRJWZqrBWgu7JGveuHmmyR9CnAPCie2N/x+iHrgnpYBIcCJWHBoMRv2TRWktsvw==}
     deprecated: This is a stub types definition for chalk (https://github.com/chalk/chalk). chalk provides its own type definitions, so you don't need @types/chalk installed!
 
-  '@types/diff@5.2.2':
-    resolution: {integrity: sha512-qVqLpd49rmJA2nZzLVsmfS/aiiBpfVE95dHhPVwG0NmSBAt+riPxnj53wq2oBq5m4Q2RF1IWFEUpnZTgrQZfEQ==}
+  '@types/diff@6.0.0':
+    resolution: {integrity: sha512-dhVCYGv3ZSbzmQaBSagrv1WJ6rXCdkyTcDyoNu1MD8JohI7pR7k8wdZEm+mvdxRKXyHVwckFzWU1vJc+Z29MlA==}
 
   '@types/istanbul-lib-coverage@2.0.6':
     resolution: {integrity: sha512-2QF/t/auWm0lsy8XtKVPG19v3sSOQlJe/YHZgfjb/KBBHOGSV+J2q/S671rcq9uTBrLAXmZpqJiaQbMT+zNU1w==}
@@ -2338,7 +2338,7 @@ snapshots:
     dependencies:
       chalk: 5.3.0
 
-  '@types/diff@5.2.2': {}
+  '@types/diff@6.0.0': {}
 
   '@types/istanbul-lib-coverage@2.0.6': {}
 
