@@ -135,8 +135,7 @@ export async function sendCommitMessage(
 		}
 
 		return responses.join("\n\n---\n\n"); // Use a separator to distinguish between chunks
-	} else {
+	}
 		const prompt = `${replaceMultipleSpacesWithTab(promptBase)}`;
 		return await sendPrompt(prompt, config);
-	}
 }
