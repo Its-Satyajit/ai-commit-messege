@@ -216,25 +216,25 @@
     "create:package": "vsce package"
   },
   "devDependencies": {
-    "@types/mocha": "^10.0.7",
-    "@types/node": "~20.16.1",
-    "@types/vscode": "^1.92.0",
-    "@typescript-eslint/eslint-plugin": "^7.18.0 ",
-    "@typescript-eslint/parser": "^7.18.0 ",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "~22.10.10",
+    "@types/vscode": "^1.96.0",
+    "@typescript-eslint/eslint-plugin": "^8.21.0",
+    "@typescript-eslint/parser": "^8.21.0",
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
-    "@vscode/vsce": "^3.0.0",
-    "esbuild": "^0.24.0",
-    "eslint": "^8.57.0",
+    "@vscode/vsce": "^3.2.1",
+    "esbuild": "^0.24.2",
+    "eslint": "^9.19.0",
     "npm-run-all": "^4.1.5",
-    "typescript": "^5.5.4"
+    "typescript": "^5.7.3"
   },
   "dependencies": {
-    "@types/chalk": "^2.2.0",
-    "@types/diff": "^5.2.2",
-    "axios": "^1.7.5",
-    "chalk": "^5.3.0",
+    "@types/chalk": "^2.2.4",
+    "@types/diff": "^7.0.0",
+    "axios": "^1.7.9",
+    "chalk": "^5.4.1",
     "diff": "7.0.0",
-    "simple-git": "^3.25.0"
+    "simple-git": "^3.27.0"
   }
 }
