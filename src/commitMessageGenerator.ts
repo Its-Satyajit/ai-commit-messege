@@ -9,10 +9,9 @@ export async function generateCommitMessage(): Promise<string | null> {
     const changes = await getGitChanges();
 
     if (changes) {
-        const message = await sendCommitMessage(changes, config);
-        return message;
-    } else {
+					const message = await sendCommitMessage(changes, config);
+					return message;
+				}
         vscode.window.showInformationMessage('No changes detected in the Git repository.');
         return null;
-    }
 }
