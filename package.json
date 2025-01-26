@@ -34,16 +34,18 @@
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
-    "@types/node": "20.x",
+    "@types/node": "~22.10.10",
     "@types/vscode": "^1.96.0",
     "@typescript-eslint/eslint-plugin": "^8.17.0",
     "@typescript-eslint/parser": "^8.17.0",
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
+    "@vscode/vsce": "^3.2.1",
     "esbuild": "^0.24.0",
     "eslint": "^9.16.0",
     "npm-run-all2": "^5.0.0",
     "typescript": "^5.7.2",
+    "webpack": "^5.97.1",
     "webpack-cli": "^6.0.1"
   },
   "contributes": {
@@ -52,7 +54,10 @@
       "properties": {
         "commitMessageGenerator.provider": {
           "type": "string",
-          "enum": ["openai", "ollama"],
+          "enum": [
+            "openai",
+            "ollama"
+          ],
           "default": "openai",
           "description": "AI provider to use for commit message generation (Ollama or OpenAI-compatible API)"
         },
@@ -141,10 +146,5 @@
         }
       ]
     }
-  },
-  "dependencies": {
-    "vsce": "^2.15.0",
-    "webpack": "^5.97.1"
   }
 }
- 
