@@ -1,44 +1,40 @@
 name: Build and Deploy Extension
+
 on:
   push:
     tags:
-      - 'v*'  
-  workflow_dispatch:
+      - "v*.*.*"
+  workflow_dispatch:  # Allows manual triggering
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: latest
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
-          cache: "pnpm"
+          node-version: 20
 
       - name: Install Dependencies
-        run: pnpm install
+        run: npm i
 
       - name: Package Extension
         run: |
-          pnpm add -g @vscode/vsce
-          vsce package --no-dependencies
+          npm install -g @vscode/vsce
+          vsce package
 
-      # - name: Publish to Visual Studio Marketplace
-      #   env:
-      #     VSCE_PAT: ${{ secrets.VS_MARKETPLACE_TOKEN }}
-      #   run: |
-      #     vsce publish --pat $VSCE_PAT --no-dependencies \
-      #       -p $(jq -r .publisher package.json)
+      - name: Publish to Visual Studio Marketplace
+        env:
+          VSCE_PAT: ${{ secrets.VS_MARKETPLACE_TOKEN }}
+        run: |
+          vsce publish --pat $VSCE_PAT
 
       - name: Publish to Open VSX Registry
         env:
           OVSX_PAT: ${{ secrets.OPEN_VSX_TOKEN }}
-        run: npx ovsx publish --pat $OVSX_PAT
+        run: |
+          npx ovsx publish --pat $OVSX_PAT
