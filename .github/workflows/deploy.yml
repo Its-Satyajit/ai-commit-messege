@@ -2,7 +2,7 @@ name: Build and Deploy Extension
 on:
   push:
     tags:
-      - 'v*'  # Simplified pattern to match any tag starting with 'v'
+      - 'v*'  
   workflow_dispatch:
 
 jobs:
@@ -26,7 +26,7 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
 
-      - name: Clean node_modules  # Fixed indentation
+      - name: Clean node_modules 
         run: |
           pnpm install --production=false
           pnpm prune --production
