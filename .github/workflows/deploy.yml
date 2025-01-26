@@ -30,7 +30,7 @@ jobs:
         run: |
           pnpm install
 
-    - name: Package Extension
+      - name: Package Extension
         run: |
           pnpm add -g @vscode/vsce
           vsce package --no-dependencies
