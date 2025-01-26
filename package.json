@@ -31,7 +31,8 @@
     "lint": "eslint src",
     "test": "vscode-test",
     "dev": "npm exec vsce package",
-    "build": "webpack --mode development"
+    "build": "webpack --mode development",
+    "publish": " npm run package && vsce publish --pat $VSCE_PAT"
   },
   "dependencies": {
     "@eslint-community/eslint-utils": "^4.4.1",
