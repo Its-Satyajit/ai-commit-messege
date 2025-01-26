@@ -1,11 +1,11 @@
 {
-  "name": "ai-commit-messege",
-  "displayName": "Ai Commit Messege",
+  "name": "ai-commit-message",
+  "displayName": "Ai Commit Message",
   "publisher": "Its-Satyajit",
   "description": "",
   "version": "0.2.4",
   "engines": {
-    "vscode": "^1.92.0"
+    "vscode": "^1.96.0"
   },
   "repository": {
     "type": "git",
@@ -14,17 +14,51 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "onCommand:extension.generateCommitMessage",
-    "onStartupFinished",
-    "onLanguage:git-commit"
-  ],
-  "icon": "extension/assets/icons/images/logo256.png",
+  "activationEvents": [],
   "main": "./dist/extension.js",
+  "scripts": {
+    "vscode:prepublish": "pnpm run package",
+    "compile": "pnpm run check-types && pnpm run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "pnpm run check-types && pnpm run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "vscode-test",
+    "dev": "pnpm exec vsce package",
+    "build": "webpack --mode development"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.96.0",
+    "@typescript-eslint/eslint-plugin": "^8.17.0",
+    "@typescript-eslint/parser": "^8.17.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "esbuild": "^0.24.0",
+    "eslint": "^9.16.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.7.2",
+    "webpack-cli": "^6.0.1"
+  },
   "contributes": {
     "configuration": {
       "title": "Ai Commit Message",
       "properties": {
+        "commitMessageGenerator.provider": {
+          "type": "string",
+          "enum": [
+            "openai",
+            "ollama"
+          ],
+          "default": "openai",
+          "description": "AI provider to use for commit message generation"
+        },
         "commitMessageGenerator.apiUrl": {
           "type": "string",
           "default": "http://127.0.0.1:1234/v1/chat/completions",
@@ -197,44 +231,8 @@
       ]
     }
   },
-  "scripts": {
-    "vscode:prepublish": "pnpm run package",
-    "compile": "pnpm run check-types && pnpm run lint && node esbuild.js",
-    "watch": "npm-run-all -p watch:*",
-    "watch:esbuild": "node esbuild.js --watch",
-    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
-    "package": "pnpm run check-types && pnpm run lint && node esbuild.js --production",
-    "compile-tests": "tsc -p . --outDir out",
-    "watch-tests": "tsc -p . -w --outDir out",
-    "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
-    "check-types": "tsc --noEmit",
-    "lint": "eslint src --ext ts",
-    "test": "vscode-test",
-    "publish:patch": "npx vsce publish patch",
-    "publish:minor": "npx vsce publish minor",
-    "publish:major": "npx vsce publish major",
-    "create:package": "vsce package"
-  },
-  "devDependencies": {
-    "@types/mocha": "^10.0.10",
-    "@types/node": "~22.10.10",
-    "@types/vscode": "^1.96.0",
-    "@typescript-eslint/eslint-plugin": "^8.21.0",
-    "@typescript-eslint/parser": "^8.21.0",
-    "@vscode/test-cli": "^0.0.10",
-    "@vscode/test-electron": "^2.4.1",
-    "@vscode/vsce": "^3.2.1",
-    "esbuild": "^0.24.2",
-    "eslint": "^9.19.0",
-    "npm-run-all": "^4.1.5",
-    "typescript": "^5.7.3"
-  },
   "dependencies": {
-    "@types/chalk": "^2.2.4",
-    "@types/diff": "^7.0.0",
-    "axios": "^1.7.9",
-    "chalk": "^5.4.1",
-    "diff": "7.0.0",
-    "simple-git": "^3.27.0"
+    "vsce": "^2.15.0",
+    "webpack": "^5.97.1"
   }
 }

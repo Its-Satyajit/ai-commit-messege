@@ -1,0 +1,94 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "watch",
+            "dependsOn": [
+                "pnpm: watch:tsc",
+                "pnpm: watch:esbuild"
+            ],
+            "presentation": {
+                "reveal": "never"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "type": "pnpm",
+            "script": "watch:esbuild",
+            "group": "build",
+            "problemMatcher": [
+                "$esbuildCustomWatch"
+            ],
+            "isBackground": true,
+            "label": "pnpm: watch:esbuild",
+            "presentation": {
+                "group": "watch",
+                "reveal": "never"
+            }
+        },
+        {
+            "type": "pnpm",
+            "script": "watch:tsc",
+            "group": "build",
+            "isBackground": true,
+            "label": "pnpm: watch:tsc",
+            "problemMatcher": [
+                "$tsc-watch"
+            ],
+            "presentation": {
+                "group": "watch",
+                "reveal": "never"
+            }
+        },
+        {
+            "type": "pnpm",
+            "script": "watch-tests",
+            "isBackground": true,
+            "presentation": {
+                "reveal": "never",
+                "group": "watchers"
+            },
+            "group": "build",
+            "label": "pnpm: watch-tests",
+            "problemMatcher": [
+                "$tsc-watch"
+            ]
+        },
+        {
+            "label": "tasks: watch-tests",
+            "dependsOn": [
+                "pnpm: watch",
+                "pnpm: watch-tests"
+            ],
+            "problemMatcher": []
+        }
+    ],
+    "problemMatchers": [
+        {
+            "name": "esbuildCustomWatch",
+            "owner": "esbuild",
+            "fileLocation": [
+                "relative",
+                "${workspaceFolder}"
+            ],
+            "pattern": [
+                {
+                    "regexp": "^\\s*(\\S+):(\\d+):(\\d+):\\s*(error|warning):\\s*(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            ],
+            "background": {
+                "activeOnStart": true,
+                "beginsPattern": "^\\[watch\\] build started$",
+                "endsPattern": "^\\[watch\\] build finished$"
+            }
+        }
+    ]
+}
