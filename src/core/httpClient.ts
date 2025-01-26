@@ -35,7 +35,7 @@ export class HttpClient {
           const line = buffer.slice(0, position).trim();
           buffer = buffer.slice(position + 1);
 
-          if (!line) continue;
+          if (!line) continue; 
 
           if (line.startsWith("data: ")) {
             const data = line.slice(6).trim();

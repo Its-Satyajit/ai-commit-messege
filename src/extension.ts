@@ -37,7 +37,7 @@ export function activate(context: vscode.ExtensionContext) {
             )
             : new OllamaProvider(
               new HttpClient(config.baseUrl || "http://localhost:11434"),
-              outputChannel,
+              outputChannel, 
             );
 
           await vscode.window.withProgress({
