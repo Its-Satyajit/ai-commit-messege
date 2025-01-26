@@ -10,6 +10,9 @@
 		"strict": true,
 		"noImplicitReturns": true,
 		"noFallthroughCasesInSwitch": true,
-		"noUnusedParameters": true
-	}
+		"noUnusedParameters": true,
+	},
+	"include": [
+		"src/**/*.ts"
+	]
 }
