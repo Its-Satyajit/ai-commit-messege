@@ -55,18 +55,18 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: 'yarn'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: Build (Development)
         if: ${{ github.event.inputs.releaseChannel == 'edge' }}
-        run: yarn build:dev
+        run: npm run build:dev
 
       - name: Build (Production)
         if: ${{ github.event.inputs.releaseChannel == 'stable' }}
-        run: yarn build:prod
+        run: npm run build:prod
 
       - name: Generate Changelog
         run: |
@@ -81,7 +81,7 @@ jobs:
       - name: Calculate Version
         id: version
         run: |
-          CURRENT_VERSION=$(jq -r .version package.json)
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
           if [ "${{ github.event.inputs.releaseChannel }}" == "edge" ]; then
             if [[ "$CURRENT_VERSION" != *"edge"* ]]; then
               NEW_VERSION=$(npx semver $CURRENT_VERSION -i pre${{ github.event.inputs.releaseType }} --preid edge)
@@ -98,20 +98,21 @@ jobs:
         run: |
           npm version $NEW_VERSION --no-git-tag-version
           git tag -a v$NEW_VERSION -m "Release v$NEW_VERSION"
+          git add package.json package-lock.json
 
       - name: Package Extension
         run: |
           if [ "${{ github.event.inputs.releaseChannel }}" == "edge" ]; then
             node .github/scripts/updateEdgeVersion.js
-            yarn vsce package --pre-release -o extension-$NEW_VERSION.vsix ${{ github.event.inputs.additionalFlags }}
+            npx vsce package --pre-release -o extension-$NEW_VERSION.vsix ${{ github.event.inputs.additionalFlags }}
           else
-            yarn vsce package -o extension-$NEW_VERSION.vsix ${{ github.event.inputs.additionalFlags }}
+            npx vsce package -o extension-$NEW_VERSION.vsix ${{ github.event.inputs.additionalFlags }}
           fi
 
       - name: Publish to VS Code Marketplace
         if: ${{ github.event.inputs.publishMarketplace == 'yes' }}
         run: |
-          yarn vsce publish --packagePath extension-$NEW_VERSION.vsix \
+          npx vsce publish --packagePath extension-$NEW_VERSION.vsix \
             --pre-release ${{ github.event.inputs.releaseChannel == 'edge' && '--pre-release' || '' }} \
             -p ${{ secrets.VS_MARKETPLACE_TOKEN }}
 
@@ -123,8 +124,10 @@ jobs:
           extensionFile: extension-$NEW_VERSION.vsix
           preRelease: ${{ github.event.inputs.releaseChannel == 'edge' }}
 
-      - name: Push Tags
+      - name: Push Changes
         run: |
+          git add package.json package-lock.json
+          git commit -m "chore: bump version to $NEW_VERSION"
           git push origin HEAD:main --tags
 
       - name: Create Release
