@@ -11,21 +11,21 @@ export class OpenAIProvider implements AIProvider {
   async *createStream(
     diff: string,
     systemPrompt: string,
-    config: ProviderConfig
+    config: ProviderConfig,
   ): AsyncIterable<string> {
-    const stream = this.client.streamingPost<OpenAIChunk>('/chat/completions', {
+    const stream = this.client.streamingPost<OpenAIChunk>("/chat/completions", {
       model: config.model,
       messages: [
-        { role: 'system', content: systemPrompt }, 
-        { role: 'user', content: diff }
+        { role: "system", content: systemPrompt },
+        { role: "user", content: diff },
       ],
       temperature: config.temperature,
       max_tokens: config.maxTokens,
-      stream: true
+      stream: true,
     });
 
     for await (const chunk of stream) {
-      yield chunk.choices[0]?.delta?.content || '';
+      yield chunk.choices[0]?.delta?.content || "";
     }
   }
 }
