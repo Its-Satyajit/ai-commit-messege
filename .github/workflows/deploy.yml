@@ -20,12 +20,18 @@ jobs:
           node-version: 22
 
       - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Setup pnpm Global Bin Directory
         run: |
-          npm install -g pnpm
-      - name: pnpm setup
-        run: pnpm setup
+          pnpm setup
+          export PNPM_HOME="${HOME}/.local/share/pnpm"
+          echo "PNPM_HOME=${PNPM_HOME}" >> $GITHUB_ENV
+          echo "${PNPM_HOME}/bin" >> $GITHUB_PATH
+
       - name: Install Dependencies
         run: pnpm install
+
       - name: Package Extension
         run: |
           pnpm add -g @vscode/vsce
@@ -34,11 +40,9 @@ jobs:
       - name: Publish to Visual Studio Marketplace
         env:
           VSCE_PAT: ${{ secrets.VS_MARKETPLACE_TOKEN }}
-        run: |
-          vsce publish --pat $VSCE_PAT
+        run: vsce publish --pat $VSCE_PAT
 
       - name: Publish to Open VSX Registry
         env:
           OVSX_PAT: ${{ secrets.OPEN_VSX_TOKEN }}
-        run: |
-          npx ovsx publish --pat $OVSX_PAT
+        run: npx ovsx publish --pat $OVSX_PAT
