@@ -26,7 +26,7 @@ modern hardware.
 - **Streaming Support**
 - **Model Deep Thinking Supported**
 
-## Installation 
+## Installation
 
 ```bash
 # VS Code Marketplace
@@ -39,7 +39,7 @@ code --install-extension Its-Satyajit.ai-commit-messege
 
 ```yaml
 CPU: Intel i5-6300U (2015) / AMD Ryzen 3 2200G
-RAM: 8GB DDR4
+RAM: 8GiB DDR4
 Storage: SATA SSD
 GPU: Optional (See acceleration section)
 ```
@@ -48,19 +48,19 @@ GPU: Optional (See acceleration section)
 
 ```yaml
 CPU: AMD Ryzen 7 5800X (8c/16t)
-RAM: 32GB DDR4-3200
+RAM: 32GiB DDR4-3200
 Storage: PCIe 4.0 NVMe SSD
-GPU: NVIDIA RTX 3060 12GB
+GPU: NVIDIA RTX 3060 12GiB
 ```
 
-## Model Specifications 
+## Model Specifications
 
 | Model                          | Parameters | Quantization | Size  | VRAM Required |
 | ------------------------------ | ---------- | ------------ | ----- | ------------- |
-| `deepseek-r1:8b` (Ollama)      | 8.03B      | Q4_K_M       | 4.9GB | 3.4GB         |
-| `deepseek-r1-distill-llama-8b` | 8B         | Q4_K_M       | 4.6GB | 3.1GB         |
+| `deepseek-r1:8b` (Ollama)      | 8.03B      | Q4_K_M       | 4.9GiB | 3.4GiB         |
+| `deepseek-r1-distill-llama-8b` | 8B         | Q4_K_M       | 4.6GiB | 3.1GiB         |
 
-## Configuration 
+## Configuration
 
 ### 1. AI Backend Setup
 
@@ -93,29 +93,35 @@ see [LM Studio](https://lmstudio.ai/) for more details
 
 ```json
 {
-  "commitMessageGenerator.provider": "ollama",
-  "commitMessageGenerator.model": "deepseek-r1:8b",
-  "commitMessageGenerator.gpuLayers": 20,
+  "commitMessageGenerator.provider": "openai",
+  "commitMessageGenerator.model": "deepseek-r1-distill-llama-8b",
   "commitMessageGenerator.temperature": 0.7,
   "commitMessageGenerator.maxTokens": 4096,
-  "commitMessageGenerator.offloadStrategy": {
-    "embeddings": "cpu",
-    "attention": "gpu",
-    "feedforward": "gpu"
-  }
+  "commitMessageGenerator.apiKey": "your_api_key",
+  "commitMessageGenerator.types": [ "feat: A new feature", ... ], // <type>: <description>
+  "commitMessageGenerator.scopes": [ "api", "ui", ... ]
 }
 ```
 
-## Hardware Performance Guide 
+## Hardware Performance Guide
 
-### Test Environment (My System Legacy System Profile)
+### Legacy System Profile (Test Environment)
+
+This is the only system I use for testing purposes.
 
 ```yaml
-CPU: Intel i7-8750H (6c/12t @ 4.1GHz)
-RAM: 16GB DDR4-2400
-GPU: NVIDIA GTX 1050 Ti Mobile 4GB
-Storage: SATA SSD (550MB/s)
 OS: openSUSE Tumbleweed
+Host: Dell G3 3579
+Kernel: Linux 6.13.0-1-default
+CPU: Intel i7-8750H (6 cores, 12 threads, up to 4.10 GHz)
+GPU: NVIDIA GTX 1050 Ti Mobile, Intel UHD Graphics 630
+RAM: 16 GiB DDR4
+Swap: 7.73 GiB (32%) (Z-RAM)
+Storage: 119.23 GiB (btrfs) + 310.46 GiB (fuseblk) + 310.46 GiB (fuseblk) + 310.46 GiB (fuseblk)
+Display: 1920x1080 @ 60 Hz (Built-in 16")
+DE: KDE Plasma 6.2.5
+Shell: zsh 5.9
+WM: KWin (Wayland)
 ```
 
 ### Performance Metrics
@@ -124,18 +130,18 @@ OS: openSUSE Tumbleweed
 | ------------------- | -------- | --------------- | ----------- |
 | First Token Latency | 42s      | 28s             | 33% ↓       |
 | Tokens/Second       | 1.8 t/s  | 3.1 t/s         | 72% ↑       |
-| Memory Usage        | 6.8GB    | 4.1GB           | 40% ↓       |
+| Memory Usage        | 6.8GiB    | 4.1GiB           | 40% ↓       |
 | Energy Consumption  | 45W      | 58W             | 29% ↑       |
 
 ### Modern Hardware Comparison
 
 | Component        | GTX 1050 Ti (2016) | RTX 3060 (2021) | RTX 4090 (2024) |
 | ---------------- | ------------------ | --------------- | --------------- |
-| VRAM             | 4GB GDDR5          | 12GB GDDR6      | 24GB GDDR6X     |
+| VRAM             | 4GiB GDDR5          | 12GiB GDDR6      | 24GiB GDDR6X     |
 | FP16 Performance | 1.8 TFLOPS         | 12.7 TFLOPS     | 82.6 TFLOPS     |
 | Tokens/sec       | 3.1 t/s            | 28 t/s          | 85 t/s          |
 
-## GPU Optimization 
+## GPU Optimization
 
 ### NVIDIA Pascal (GTX 10-Series)
 
@@ -146,13 +152,13 @@ export GGML_CUDA_OFFLOAD=20
 export CUDA_VISIBLE_DEVICES=0
 
 # Memory Allocation Strategy
-┌──────────────────────┐          ┌──────────────────────┐
-│       CPU RAM        │          │     GPU VRAM         │
-│ 16GB DDR4            │          │ 4GB GDDR5            │
-├──────────────────────┤          ├──────────────────────┤
-│ Model Weights (2.1GB)│◄─mmap─►  │ Offloaded Layers     │
-│ Activations (1.2GB)  │          │ (20 layers @ 140MB)  │
-└──────────────────────┘          └──────────────────────┘
+┌───────────────────────┐           ┌──────────────────────┐
+│       CPU RAM         │           │     GPU VRAM         │
+│ 16GiB DDR4            │           │ 4GiB GDDR5           │
+├───────────────────────┤ ⟵mmap⟶ ├──────────────────────┤
+│ Model Weights (2.1GiB)│           │  Offloaded Layers    │
+│ Activations (1.2GiB)  │           │ (20 layers @ 140MB)  │
+└───────────────────────┘           └──────────────────────┘
 ```
 
 ### Configuration Tips
@@ -191,7 +197,7 @@ export CUDA_VISIBLE_DEVICES=0
 access, and no API costs. Local processing ensures your code never leaves your
 machine.
 
-**Q: Minimum hardware for usable performance?**<br> A: 4-core CPU (2015+), 8GB
+**Q: Minimum hardware for usable performance?**<br> A: 4-core CPU (2015+), 8GiB
 RAM, SSD. Expect 2-3 tokens/sec.
 
 **Q: Can I use AMD GPUs?**<br> A: Yes via ROCm/Vulkan, but performance varies.
