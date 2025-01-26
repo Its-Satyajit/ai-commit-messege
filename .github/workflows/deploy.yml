@@ -2,9 +2,9 @@ name: Build and Deploy Extension
 on:
   push:
     tags:
-      - 'v*'  
+      - "v*"
   workflow_dispatch:
- 
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -26,10 +26,6 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
 
-      - name: Clean node_modules 
-        run: |
-          pnpm install
-
       - name: Package Extension
         run: |
           pnpm add -g @vscode/vsce
@@ -38,7 +34,7 @@ jobs:
       - name: Publish to Visual Studio Marketplace
         env:
           VSCE_PAT: ${{ secrets.VS_MARKETPLACE_TOKEN }}
-        run: vsce publish --pat $VSCE_PAT
+        run: vsce publish --pat $VSCE_PAT --no-dependencies
 
       - name: Publish to Open VSX Registry
         env:
