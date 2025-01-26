@@ -1,40 +1,136 @@
-name: Build and Deploy Extension
+name: VS Code Extension Release
 
 on:
-  push:
-    tags:
-      - "v*.*.*"
-  workflow_dispatch:  # Allows manual triggering
+  workflow_dispatch:
+    inputs:
+      releaseType:
+        description: 'Semver release type (patch, minor, major)'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+      releaseChannel:
+        description: 'Release channel'
+        required: true
+        default: 'stable'
+        type: choice
+        options:
+          - stable
+          - edge
+      publishMarketplace:
+        description: 'Publish to VS Code Marketplace?'
+        required: true
+        default: 'yes'
+        type: choice
+        options:
+          - yes
+          - no
+      publishOpenVSX:
+        description: 'Publish to OpenVSX?'
+        required: true
+        default: 'yes'
+        type: choice
+        options:
+          - yes
+          - no
+      additionalFlags:
+        description: 'Additional VSCE flags (optional)'
+        required: false
+        default: ''
 
 jobs:
-  build-and-deploy:
+  release:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: 18
+          cache: 'yarn'
 
-      - name: Install Dependencies
-        run: npm i
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build (Development)
+        if: ${{ github.event.inputs.releaseChannel == 'edge' }}
+        run: yarn build:dev
+
+      - name: Build (Production)
+        if: ${{ github.event.inputs.releaseChannel == 'stable' }}
+        run: yarn build:prod
+
+      - name: Generate Changelog
+        run: |
+          git log $(git describe --tags --abbrev=0)..HEAD --oneline > CHANGELOG.md
+          cat CHANGELOG.md
+
+      - name: Configure Git
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+      - name: Calculate Version
+        id: version
+        run: |
+          CURRENT_VERSION=$(jq -r .version package.json)
+          if [ "${{ github.event.inputs.releaseChannel }}" == "edge" ]; then
+            if [[ "$CURRENT_VERSION" != *"edge"* ]]; then
+              NEW_VERSION=$(npx semver $CURRENT_VERSION -i pre${{ github.event.inputs.releaseType }} --preid edge)
+            else
+              NEW_VERSION=$(npx semver $CURRENT_VERSION -i prerelease)
+            fi
+          else
+            NEW_VERSION=$(npx semver $CURRENT_VERSION -i ${{ github.event.inputs.releaseType }})
+          fi
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
+          echo "Using version: $NEW_VERSION"
+
+      - name: Update Version
+        run: |
+          npm version $NEW_VERSION --no-git-tag-version
+          git tag -a v$NEW_VERSION -m "Release v$NEW_VERSION"
 
       - name: Package Extension
         run: |
-          npm install -g @vscode/vsce
-          vsce package
+          if [ "${{ github.event.inputs.releaseChannel }}" == "edge" ]; then
+            node .github/scripts/updateEdgeVersion.js
+            yarn vsce package --pre-release -o extension-$NEW_VERSION.vsix ${{ github.event.inputs.additionalFlags }}
+          else
+            yarn vsce package -o extension-$NEW_VERSION.vsix ${{ github.event.inputs.additionalFlags }}
+          fi
 
-      # - name: Publish to Visual Studio Marketplace
-      #   env:
-      #     VSCE_PAT: ${{ secrets.VS_MARKETPLACE_TOKEN }}
-      #   run: |
-      #     vsce publish minor --pat $VSCE_PAT
-
-      - name: Publish to Open VSX Registry
-        env:
-          OVSX_PAT: ${{ secrets.OPEN_VSX_TOKEN }}
+      - name: Publish to VS Code Marketplace
+        if: ${{ github.event.inputs.publishMarketplace == 'yes' }}
         run: |
-          npx ovsx publish --pat $OVSX_PAT
+          yarn vsce publish --packagePath extension-$NEW_VERSION.vsix \
+            --pre-release ${{ github.event.inputs.releaseChannel == 'edge' && '--pre-release' || '' }} \
+            -p ${{ secrets.VS_MARKETPLACE_TOKEN }}
+
+      - name: Publish to OpenVSX
+        if: ${{ github.event.inputs.publishOpenVSX == 'yes' }}
+        uses: HaaLeo/publish-vscode-extension@v1
+        with:
+          pat: ${{ secrets.OPEN_VSX_TOKEN }}
+          extensionFile: extension-$NEW_VERSION.vsix
+          preRelease: ${{ github.event.inputs.releaseChannel == 'edge' }}
+
+      - name: Push Tags
+        run: |
+          git push origin HEAD:main --tags
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: v${{ env.NEW_VERSION }}
+          artifacts: 'extension-*.vsix'
+          bodyFile: CHANGELOG.md
+          prerelease: ${{ github.event.inputs.releaseChannel == 'edge' }}
