@@ -33,13 +33,13 @@
     "dev": "pnpm exec vsce package",
     "build": "webpack --mode development"
   },
-  "devDependencies": {
-      "@eslint-community/eslint-utils": "^4.4.1",
-  "@eslint/config-array": "^0.19.1",
-  "@typescript-eslint/eslint-plugin": "^8.21.0",
-  "@typescript-eslint/parser": "^8.21.0",
-  "eslint": "^9.19.0",
-  "eslint-plugin-import": "^2.29.1",
+  "dependencies": {
+    "@eslint-community/eslint-utils": "^4.4.1",
+    "@eslint/config-array": "^0.19.1",
+    "@typescript-eslint/eslint-plugin": "^8.21.0",
+    "@typescript-eslint/parser": "^8.21.0",
+    "eslint": "^9.19.0",
+    "eslint-plugin-import": "^2.29.1",
     "@types/mocha": "^10.0.10",
     "@types/node": "~22.10.10",
     "@types/vscode": "^1.96.0",
@@ -55,7 +55,7 @@
   "contributes": {
     "configuration": {
       "title": "Ai Commit Message",
-      "properties": { 
+      "properties": {
         "commitMessageGenerator.provider": {
           "type": "string",
           "enum": [
