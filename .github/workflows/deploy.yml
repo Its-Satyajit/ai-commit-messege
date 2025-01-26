@@ -22,10 +22,10 @@ jobs:
       - name: Install pnpm
         run: |
           npm install -g pnpm
-
+      - name: pnpm setup
+        run: pnpm setup
       - name: Install Dependencies
         run: pnpm install
-
       - name: Package Extension
         run: |
           pnpm add -g @vscode/vsce
