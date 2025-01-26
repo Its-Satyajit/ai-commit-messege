@@ -9,31 +9,24 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
         with:
           version: latest
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: "pnpm"
-
+      
       - name: Install Dependencies
-        run: pnpm install
-
-      - name: Clean node_modules 
         run: |
+          pnpm prune
           pnpm install
 
       - name: Package Extension
         run: |
           pnpm add -g @vscode/vsce
-          vsce package 
+          vsce package -o extension.vsix
 
       - name: Publish to Visual Studio Marketplace
         env:
