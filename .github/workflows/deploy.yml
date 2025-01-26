@@ -1,15 +1,13 @@
 name: Build and Deploy Extension
-
 on:
   push:
     tags:
       - "v*.*.*"
-  workflow_dispatch:  # Allows manual triggering
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -18,20 +16,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: "pnpm"  
 
       - name: Install pnpm
-        run: npm install -g pnpm
-
-      - name: Setup pnpm Global Bin Directory
-        run: |
-          pnpm setup
-          export PNPM_HOME="${HOME}/.local/share/pnpm"
-          echo "PNPM_HOME=${PNPM_HOME}" >> $GITHUB_ENV
-          echo "${PNPM_HOME}/bin" >> $GITHUB_PATH
+        uses: pnpm/action-setup@v4 
+        with:
+          version: latest
 
       - name: Install Dependencies
         run: pnpm install
 
+     
       - name: Package Extension
         run: |
           pnpm add -g @vscode/vsce
