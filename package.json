@@ -3,6 +3,7 @@
   "displayName": "Ai Commit Message",
   "publisher": "Its-Satyajit",
   "description": "",
+  "author": "Its-Satyajit",
   "version": "0.3.0",
   "engines": {
     "vscode": "^1.96.0"
@@ -54,7 +55,7 @@
   "contributes": {
     "configuration": {
       "title": "Ai Commit Message",
-      "properties": {
+      "properties": { 
         "commitMessageGenerator.provider": {
           "type": "string",
           "enum": [
