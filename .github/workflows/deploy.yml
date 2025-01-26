@@ -2,7 +2,7 @@ name: Build and Deploy Extension
 on:
   push:
     tags:
-      - "v*.*.*"
+      - 'v*'  # Simplified pattern to match any tag starting with 'v'
   workflow_dispatch:
 
 jobs:
@@ -12,27 +12,24 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # 1. Install pnpm FIRST (standalone installation)
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
           version: latest
 
-      # 2. Setup Node.js AFTER pnpm is installed
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: "pnpm" # Now works because pnpm is already in PATH
+          cache: "pnpm"
 
-      # 3. Proceed with dependencies and build
       - name: Install Dependencies
         run: pnpm install
-      - name: Clean node_modules
-         run: |
+
+      - name: Clean node_modules  # Fixed indentation
+        run: |
           pnpm install --production=false
           pnpm prune --production
- 
 
       - name: Package Extension
         run: |
