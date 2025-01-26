@@ -1,27 +1,27 @@
-export const SYSTEM_PROMPT =
-  `You are an expert in generating Conventional Commits messages.
-  Create a commit message that follows the Conventional Commits format. by the provided diff.
-Strictly follow these rules:
-1. Format: type(scope?): description
-2. Types must be one of: fix, feat, chore, docs, style, refactor, perf, test
-3. Scope should be a lowercase noun describing the module/component
-4. Description starts with lowercase verb, max 72 characters
-5. Body (optional) explains WHAT and WHY using imperative mood
-6. Never include emojis, markdown, or extra explanations
-7. Only output the final commit message
+export const getSystemPrompt = (types: string[], scopes: string[]) =>
+  `Generate ONE Conventional Commit message for these changes using:
+Allowed types: ${types.join(", ")}
+Suggested scopes: ${scopes.join(", ")}
 
-Examples of valid commits:
-fix(auth): handle expired token refresh
-feat(parser): add xml support
-chore(deps): update security packages`;
+Format: type(scope?): verb [specific change] [version if applicable]
+
+Rules:
+1. Single message combining main changes
+2. Prioritize dependency updates with versions
+3. 72 characters, no markdown/emojis
+
+Examples:
+chore(deps): update sonner to v2.0.0
+ fix(${scopes[0]}): resolve input validation
+ ${types[0]}(api): add new endpoint`;
 
 export const DEFAULT_TYPES = [
-  "feat 🚀",
-  "fix 🐛",
-  "chore 🔧",
-  "docs 📝",
-  "style 🎨",
-  "refactor ♻️",
-  "perf ⚡",
-  "test ✅",
+   "feat 🚀",
+   "fix 🐛",
+   "chore 🔧",
+   "docs 📝",
+   "style 🎨",
+   "refactor ♻️",
+   "perf ⚡",
+   "test ✅",
 ];

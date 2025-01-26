@@ -26,24 +26,37 @@ export class HttpClient {
     try {
       while (true) {
         const { done, value } = await reader.read();
-        if (done) {
-          break;
-        }
+        if (done) break;
 
-        buffer += decoder.decode(value as Uint8Array, { stream: true });
-        const chunks = buffer.split("\n");
-        buffer = chunks.pop() || "";
+        buffer += decoder.decode(value, { stream: true });
+        let position;
 
-        for (const chunk of chunks) {
-          const trimmed = chunk.trim();
-          if (!trimmed) {
-            continue;
-          }
+        while ((position = buffer.indexOf("\n")) >= 0) {
+          const line = buffer.slice(0, position).trim();
+          buffer = buffer.slice(position + 1);
 
-          try {
-            yield JSON.parse(trimmed);
-          } catch (error) {
-            console.error("Failed to parse chunk:", error);
+          if (!line) continue;
+
+          if (line.startsWith("data: ")) {
+            const data = line.slice(6).trim();
+            if (data === "[DONE]") continue;
+
+            try {
+              yield JSON.parse(data);
+            } catch (error) {
+              console.error("Failed to parse SSE chunk:", error, "Data:", data);
+            }
+          } else {
+            try {
+              yield JSON.parse(line);
+            } catch (error) {
+              console.error(
+                "Failed to parse JSON chunk:",
+                error,
+                "Line:",
+                line,
+              );
+            }
           }
         }
       }
