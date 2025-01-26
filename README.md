@@ -1,71 +1,90 @@
-# ai-commit-messege README
 
-This is the README for your extension "ai-commit-messege". After writing up a brief description, we recommend including the following sections.
+
+# AI Commit Message Generator
+
+A VS Code extension that generates Conventional Commit messages using AI, supporting both local and cloud-based models.
+
+
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- **Real-Time Streaming**  
+  Watch messages generate token-by-token with immediate visual feedback
 
-For example if there is an image subfolder under your extension project workspace:
+- **Dual AI Backends**  
+  Choose between:
+  - 🦙 **Ollama** (local models)
+  - 🤖 **OpenAI-Compatible** (LM Studio/Cloud services)
 
-\!\[feature X\]\(images/feature-x.png\)
+- **Deep Reasoning Capture**  
+  Preserve AI's internal thinking process in hidden `<think>` blocks
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+- **Smart Validation**  
+  Auto-validate messages against Conventional Commits specification
 
-## Requirements
+- **Diagnostic Logging**  
+  Full visibility into AI operations via Output Channel
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+## Installation
 
-## Extension Settings
+1. Install from [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=Its-Satyajit.ai-commit-messege)| [VSIX](https://open-vsx.org/extension/Its-Satyajit/ai-commit-messege) 
+2. Set up your AI backend:
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+### Ollama (Recommended for Local)
+```bash
 
-For example:
+curl -fsSL https://ollama.com/install.sh | sh
 
-This extension contributes the following settings:
+ollama run deepseek-r1:8b
+```
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+### LM Studio (OpenAI-Compatible Local)
+1. Download [LM Studio](https://lmstudio.ai/)
+2. Load any llama2-based model like deepseek-r1-distill-llama-8b
+3. Enable Local Server (Menu → Local Server)
 
-## Known Issues
+## Usage
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+1. Stage your changes in Source Control
+2. Click the **✨ Generate Commit Message** button
+3. Review AI-generated message
+4. Commit as normal
 
-## Release Notes
+## Configuration
 
-Users appreciate release notes as you update your extension.
+Configure in `settings.json`:
 
-### 1.0.0
+```json
+{
+  "commitMessageGenerator.provider": "ollama",
+  "commitMessageGenerator.apiUrl": "http://localhost:11434",
+  "commitMessageGenerator.model": "deepseek-r1:8b",
+  "commitMessageGenerator.temperature": 0.7,
+  "commitMessageGenerator.types": [
+    "feat", "fix", "docs", "style", "refactor", "test", "chore"
+  ]
+}
+```
 
-Initial release of ...
+| Setting         | Description                              | Default Values                          |
+|-----------------|------------------------------------------|-----------------------------------------|
+| `provider`      | AI backend provider                      | `ollama`                                |
+| `apiUrl`        | Endpoint URL                             | Auto-detected based on provider         |
+| `model`         | Model identifier                         | Provider-specific                       |
+| `temperature`   | Creativity control (0-1)                 | 0.7                                     |
+| `types`         | Allowed commit types                     | Conventional Commits list               |
 
-### 1.0.1
+## Troubleshooting
 
-Fixed issue #.
+**No generated message:**
+- Verify staged changes exist
+- Check model is running (Ollama/LM Studio)
+- View logs via `View > Output > AI Commit Message Generator`
 
-### 1.1.0
+**Validation failures:**
+- Review configured `types`/`scopes`
+- Check message length (72 char limit)
 
-Added features X, Y, and Z.
+## License
 
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+This project is licensed under the MIT License.
