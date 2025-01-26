@@ -5,8 +5,9 @@
   "description": "",
   "author": "Its-Satyajit",
   "version": "0.2.0",
-  "engines": {
-    "vscode": "^1.96.0"
+   "engines": {
+    "vscode": "^1.96.0",
+    "node": ">=22.0.0"
   },
   "repository": {
     "type": "git",
@@ -23,7 +24,6 @@
     "watch": "npm-run-all -p watch:*",
     "watch:esbuild": "node esbuild.js --watch",
     "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
-    "package": "npm run check-types && npm run lint && node esbuild.js --production",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
@@ -32,7 +32,8 @@
     "test": "vscode-test",
     "dev": "npm exec vsce package",
     "build": "webpack --mode development",
-    "publish": " npm run package && vsce publish --pat $VSCE_PAT"
+    "release": "vsce publish --pat $VSCE_PAT",
+    "package": "npm run check-types && npm run lint && node esbuild.js --production"
   },
   "dependencies": {
     "@eslint-community/eslint-utils": "^4.4.1",
