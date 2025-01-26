@@ -28,8 +28,7 @@ jobs:
 
       - name: Clean node_modules 
         run: |
-          pnpm install --production=false
-          pnpm prune --production
+          pnpm install
 
       - name: Package Extension
         run: |
