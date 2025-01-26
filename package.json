@@ -52,7 +52,7 @@
       "properties": {
         "commitMessageGenerator.provider": {
           "type": "string",
-          "enum": [ 
+          "enum": [
             "openai",
             "ollama"
           ],

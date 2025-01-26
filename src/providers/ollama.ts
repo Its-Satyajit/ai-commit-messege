@@ -5,7 +5,7 @@ import type {
 } from './aiProvider';
 
 interface OllamaResponse {
-  response?: string; 
+  response?: string;
 }
 
 export class OllamaProvider implements AIProvider {
@@ -14,22 +14,22 @@ export class OllamaProvider implements AIProvider {
   async *createStream(
     diff: string,
     systemPrompt: string,
-    config: ProviderConfig
+    config: ProviderConfig,
   ): AsyncIterable<string> {
     const fullPrompt = `${systemPrompt}\n\nDiff:\n${diff}`;
-    
-    const stream = this.client.streamingPost<OllamaResponse>('/api/generate', {
+
+    const stream = this.client.streamingPost<OllamaResponse>("/api/generate", {
       model: config.model,
       prompt: fullPrompt,
       options: {
         temperature: config.temperature,
-        num_predict: config.maxTokens
+        num_predict: config.maxTokens,
       },
-      stream: true
+      stream: true,
     });
 
     for await (const chunk of stream) {
-      yield chunk.response || '';
+      yield chunk.response || "";
     }
   }
 }
