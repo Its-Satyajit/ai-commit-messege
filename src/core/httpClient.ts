@@ -26,7 +26,9 @@ export class HttpClient {
 			try {
 				while (true) {
 					const { done, value } = await reader.read();
-					if (done) break;
+					if (done) {
+						break;
+					}
 
 					buffer += decoder.decode(value, { stream: true });
 					let position;
@@ -35,11 +37,15 @@ export class HttpClient {
 						const line = buffer.slice(0, position).trim();
 						buffer = buffer.slice(position + 1);
 
-						if (!line) continue;
+						if (!line) {
+							continue;
+						}
 
 						if (line.startsWith("data: ")) {
 							const data = line.slice(6).trim();
-							if (data === "[DONE]") continue;
+							if (data === "[DONE]") {
+								continue;
+							}
 
 							try {
 								yield JSON.parse(data);
