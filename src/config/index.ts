@@ -21,7 +21,7 @@ export function loadConfig(): AppConfig {
   return {
     provider,
     model: config.get(
-      "model",
+      "model", 
       provider === "ollama" ? "deepseek-r1:8b" : "deepseek-r1-distill-llama-8b",
     ),
     temperature: Math.min(Math.max(config.get("temperature", 0.7), 0), 1),

@@ -13,7 +13,7 @@ Rules:
 Examples:
 chore(deps): update sonner to v2.0.0
  fix(${scopes[0]}): resolve input validation
- ${types[0]}(api): add new endpoint`;
+ ${types[0]}(api): add new endpoint`; 
 
 export const DEFAULT_TYPES = [
    "feat 🚀",

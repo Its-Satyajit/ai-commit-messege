@@ -25,7 +25,7 @@ export class OllamaProvider implements AIProvider {
       `🤖 Sending to Ollama (model: ${config.model}):`,
     );
     this.outputChannel.appendLine(`📝 System Prompt: ${systemPrompt}`);
-    this.outputChannel.appendLine(`🔧 Config: ${JSON.stringify(config)}`);
+    this.outputChannel.appendLine(`🔧 Config: ${JSON.stringify(config)}`); 
     this.outputChannel.appendLine(
       `📄 Diff (${diff.length} chars): ${diff.slice(0, 200)}...`,
     );

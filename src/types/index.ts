@@ -18,3 +18,4 @@ export interface OllamaChunk {
 }
 
 export type ProviderResponse = OpenAIChunk | OllamaChunk;
+ 
