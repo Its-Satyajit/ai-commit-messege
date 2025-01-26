@@ -12,8 +12,8 @@ importers:
         specifier: ^2.2.4
         version: 2.2.4
       '@types/diff':
-        specifier: ^7.0.0
-        version: 7.0.0
+        specifier: ^5.2.2
+        version: 5.2.3
       axios:
         specifier: ^1.7.9
         version: 1.7.9
@@ -365,8 +365,8 @@ packages:
     resolution: {integrity: sha512-pb/QoGqtCpH2famSp72qEsXkNzcErlVmiXlQ/ww+5AddD8TmmYS7EWg5T20YiNCAiTgs8pMf2G8SJG5h/ER1ZQ==}
     deprecated: This is a stub types definition. chalk provides its own type definitions, so you do not need this installed.
 
-  '@types/diff@7.0.0':
-    resolution: {integrity: sha512-sVpkpbnTJL9CYoDf4U+tHaQLe5HiTaHWY7m9FuYA7oMCHwC9ie0Vh9eIGapyzYrU3+pILlSY2fAc4elfw5m4dg==}
+  '@types/diff@5.2.3':
+    resolution: {integrity: sha512-K0Oqlrq3kQMaO2RhfrNQX5trmt+XLyom88zS0u84nnIcLvFnRUMRRHmrGny5GSM+kNO9IZLARsdQHDzkhAgmrQ==}
 
   '@types/estree@1.0.6':
     resolution: {integrity: sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==}
@@ -2424,7 +2424,7 @@ snapshots:
     dependencies:
       chalk: 5.4.1
 
-  '@types/diff@7.0.0': {}
+  '@types/diff@5.2.3': {}
 
   '@types/estree@1.0.6': {}
 
