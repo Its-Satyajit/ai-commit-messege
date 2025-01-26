@@ -1,7 +1,10 @@
+import tsEslint from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
+
 export default [{
   files: ["**/*.ts"],
   plugins: {
-    "@typescript-eslint": typescriptEslint,
+    "@typescript-eslint": tsEslint,
   },
   languageOptions: {
     parser: tsParser,
