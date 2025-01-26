@@ -1,3 +1,5 @@
+import * as vscode from 'vscode';
+
 import { HttpClient } from '../core/httpClient';
 import type { OpenAIChunk } from '../types';
 import type {
@@ -6,13 +8,27 @@ import type {
 } from './aiProvider';
 
 export class OpenAIProvider implements AIProvider {
-  constructor(private client: HttpClient) {}
+  constructor(
+    private client: HttpClient,
+    private outputChannel: vscode.OutputChannel,
+  ) {}
 
   async *createStream(
     diff: string,
     systemPrompt: string,
     config: ProviderConfig,
   ): AsyncIterable<string> {
+
+ this.outputChannel.appendLine(
+      `🤖 Sending to OpenAI (model: ${config.model}):`,
+    );
+    this.outputChannel.appendLine(`📝 System Prompt: ${systemPrompt}`);
+    this.outputChannel.appendLine(`🔧 Config: ${JSON.stringify(config)}`);
+    this.outputChannel.appendLine(
+      `📄 Diff (${diff.length} chars): ${diff.slice(0, 200)}...`,
+    );
+
+
     const stream = this.client.streamingPost<OpenAIChunk>("/chat/completions", {
       model: config.model,
       messages: [
@@ -25,7 +41,8 @@ export class OpenAIProvider implements AIProvider {
     });
 
     for await (const chunk of stream) {
-      yield chunk.choices[0]?.delta?.content || "";
+      const content = chunk.choices[0]?.delta?.content || "";
+      yield content;
     }
   }
 }

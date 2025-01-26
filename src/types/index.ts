@@ -1,8 +1,16 @@
-// Replace namespaces with interfaces
+
 export interface OpenAIChunk {
-  choices: {
-    delta: { content?: string };
-  }[];
+  id: string;
+  object: string;
+  created: number;
+  model: string;
+  choices: Array<{
+    delta: {
+      content?: string;
+    };
+    index: number;
+    finish_reason: null | string;
+  }>;
 }
 
 export interface OllamaChunk {
