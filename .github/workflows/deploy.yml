@@ -34,7 +34,7 @@ jobs:
       - name: Package Extension
         run: |
           pnpm add -g @vscode/vsce
-          vsce package --no-dependencies
+          vsce package 
 
       - name: Publish to Visual Studio Marketplace
         env:
