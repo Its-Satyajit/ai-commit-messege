@@ -19,7 +19,7 @@ export class OpenAIProvider implements AIProvider {
     config: ProviderConfig,
   ): AsyncIterable<string> {
 
- this.outputChannel.appendLine(
+ this.outputChannel.appendLine( 
       `🤖 Sending to OpenAI (model: ${config.model}):`,
     );
     this.outputChannel.appendLine(`📝 System Prompt: ${systemPrompt}`);

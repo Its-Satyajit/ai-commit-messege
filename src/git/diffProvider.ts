@@ -23,7 +23,7 @@ export class GitDiffProvider {
 
     const diff = await repo.diff(true);
     this.outputChannel.appendLine(
-      `📋 Found diff (${diff.length} characters):\n${diff.slice(0, 500)}...`,
+      `📋 Found diff (${diff.length} characters):\n${diff.slice(0, 500)}...`, 
     );
 
     return diff;

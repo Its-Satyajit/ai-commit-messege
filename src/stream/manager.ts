@@ -22,7 +22,7 @@ export class StreamManager {
       this.outputChannel.appendLine(`✅ Final message: ${fullMessage}`);
       return fullMessage;
     } catch (error) {
-      this.outputChannel.appendLine(
+      this.outputChannel.appendLine( 
         `❌ Error: ${error instanceof Error ? error.message : "Unknown error"}`,
       );
       throw error;
