@@ -214,8 +214,8 @@ We welcome contributions! Please review our:
 # Build from Source
 git clone https://github.com/Its-Satyajit/ai-commit-messege
 cd ai-commit-messege
-pnpm install
-pnpm run package
+npm install
+npm run package
 ```
 
 ## License 📄
