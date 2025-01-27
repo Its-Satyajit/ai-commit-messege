@@ -12,38 +12,48 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      # 1. Install pnpm FIRST (standalone installation)
+      
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
           version: latest
 
-      # 2. Setup Node.js AFTER pnpm is installed
+      
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: "pnpm" # Now works because pnpm is already in PATH
+          cache: "pnpm"
 
-      # 3. Proceed with dependencies and build
+      
+      - name: Configure Git
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+
+      
       - name: Install Dependencies
         run: pnpm install
-      - name: Clean node_modules
-         run: |
-          pnpm install --production=false
-          pnpm prune --production
- 
 
+      
+      - name: Clean node_modules
+        run: |
+          rm -rf node_modules
+          pnpm install --frozen-lockfile
+
+      
       - name: Package Extension
         run: |
           pnpm add -g @vscode/vsce
           vsce package --no-dependencies
 
+      
       - name: Publish to Visual Studio Marketplace
         env:
           VSCE_PAT: ${{ secrets.VS_MARKETPLACE_TOKEN }}
-        run: vsce publish --pat $VSCE_PAT
+        run: pnpm exec vsce publish --pat $VSCE_PAT --no-dependencies
 
+      
       - name: Publish to Open VSX Registry
         env:
           OVSX_PAT: ${{ secrets.OPEN_VSX_TOKEN }}

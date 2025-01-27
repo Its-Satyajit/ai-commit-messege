@@ -27,18 +27,22 @@ export function activate(context: vscode.ExtensionContext) {
 					const config = loadConfig();
 					const diff = await diffProvider.getStagedDiff();
 
-					const client =
-						config.provider === "openai"
-							? new OpenAIProvider(
-									new HttpClient(config.baseUrl || "http://localhost:1234/v1", {
-										Authorization: `Bearer ${config.apiKey}`,
-									}),
-									outputChannel,
-								)
-							: new OllamaProvider(
-									new HttpClient(config.baseUrl || "http://localhost:11434"),
-									outputChannel,
-								);
+					const client = config.provider === "openai"
+						? new OpenAIProvider(
+							new HttpClient(
+								config.baseUrl || "http://localhost:1234/v1",
+								{
+									Authorization: `Bearer ${config.apiKey}`,
+								},
+							),
+							outputChannel,
+						)
+						: new OllamaProvider(
+							new HttpClient(
+								config.baseUrl || "http://localhost:11434",
+							),
+							outputChannel,
+						);
 
 					await vscode.window.withProgress(
 						{
@@ -47,26 +51,34 @@ export function activate(context: vscode.ExtensionContext) {
 							cancellable: true,
 						},
 						async (progress, token) => {
-							token.onCancellationRequested(() => streamManager.abort());
+							token.onCancellationRequested(() =>
+								streamManager.abort()
+							);
 
 							return streamManager.handleStream(
 								client.createStream(
 									diff,
-									getSystemPrompt(config.types, config.scopes),
+									getSystemPrompt(
+										config.types,
+										config.scopes,
+									),
 									{
 										model: config.model,
 										temperature: config.temperature,
 										maxTokens: config.maxTokens,
 									},
 								),
-								(content) => progress.report({ message: content }),
+								(content) =>
+									progress.report({ message: content }),
 							);
 						},
 					);
 				} catch (error) {
 					outputChannel.appendLine(`🔥 Critical error: ${error}`);
 					vscode.window.showErrorMessage(
-						error instanceof Error ? error.message : "Generation failed",
+						error instanceof Error
+							? error.message
+							: "Generation failed",
 					);
 				}
 			},

@@ -4,8 +4,8 @@
         {
             "label": "watch",
             "dependsOn": [
-                "pnpm: watch:tsc",
-                "pnpm: watch:esbuild"
+                "npm: watch:tsc",
+                "npm: watch:esbuild"
             ],
             "presentation": {
                 "reveal": "never"
@@ -16,25 +16,25 @@
             }
         },
         {
-            "type": "pnpm",
+            "type": "npm",
             "script": "watch:esbuild",
             "group": "build",
             "problemMatcher": [
                 "$esbuildCustomWatch"
             ],
             "isBackground": true,
-            "label": "pnpm: watch:esbuild",
+            "label": "npm: watch:esbuild",
             "presentation": {
                 "group": "watch",
                 "reveal": "never"
             }
         },
         {
-            "type": "pnpm",
+            "type": "npm",
             "script": "watch:tsc",
             "group": "build",
             "isBackground": true,
-            "label": "pnpm: watch:tsc",
+            "label": "npm: watch:tsc",
             "problemMatcher": [
                 "$tsc-watch"
             ],
@@ -44,7 +44,7 @@
             }
         },
         {
-            "type": "pnpm",
+            "type": "npm",
             "script": "watch-tests",
             "isBackground": true,
             "presentation": {
@@ -52,7 +52,7 @@
                 "group": "watchers"
             },
             "group": "build",
-            "label": "pnpm: watch-tests",
+            "label": "npm: watch-tests",
             "problemMatcher": [
                 "$tsc-watch"
             ]
@@ -60,8 +60,8 @@
         {
             "label": "tasks: watch-tests",
             "dependsOn": [
-                "pnpm: watch",
-                "pnpm: watch-tests"
+                "npm: watch",
+                "npm: watch-tests"
             ],
             "problemMatcher": []
         }
