@@ -1,8 +1,8 @@
 {
-  "name": "ai-commit-messege",
-  "displayName": "Ai Commit Message",
+  "name": "its-satyajit-ai-commit-message",
+  "displayName": "AI Commit Message (IS)",
   "publisher": "Its-Satyajit",
-  "description": "",
+  "description": "AI-powered Conventional Commit generation - Transform code diffs into meaningful commit messages using local AI models. Optimized for both legacy and modern hardware.",
   "author": "Its-Satyajit",
   "version": "0.3.0",
    "engines": {
@@ -152,5 +152,9 @@
         }
       ]
     }
+  }
+  ,
+  "pnpm":{
+    "onlyBuiltDependencies": ["@vscode/vsce-sign", "esbuild", "keytar"]
   }
 }
