@@ -1,160 +1,143 @@
 {
-  "name": "its-satyajit-ai-commit-message",
-  "displayName": "AI Commit Message (IS)",
-  "publisher": "Its-Satyajit",
-  "description": "AI-powered Conventional Commit generation - Transform code diffs into meaningful commit messages using local AI models. Optimized for both legacy and modern hardware.",
-  "author": "Its-Satyajit",
-  "version": "0.3.0",
-   "engines": {
-    "vscode": "^1.96.0",
-    "node": ">=22.0.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Its-Satyajit/ai-commit-messege.git"
-  },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [],
-  "main": "./dist/extension.js",
-  "scripts": {
-    "vscode:prepublish": "npm run package",
-    "compile": "npm run check-types && npm run lint && node esbuild.js",
-    "watch": "npm-run-all -p watch:*",
-    "watch:esbuild": "node esbuild.js --watch",
-    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
-    "compile-tests": "tsc -p . --outDir out",
-    "watch-tests": "tsc -p . -w --outDir out",
-    "pretest": "npm run compile-tests && npm run compile && npm run lint",
-    "check-types": "tsc --noEmit",
-    "lint": "eslint src",
-    "test": "vscode-test",
-    "dev": "npm exec vsce package",
-    "build": "webpack --mode development",
-    "release": "vsce publish --pat $VSCE_PAT",
-    "package": "npm run check-types && npm run lint && node esbuild.js --production"
-  },
-  "dependencies": {
-    "@eslint-community/eslint-utils": "^4.4.1",
-    "@eslint/config-array": "^0.19.1",
-    "@typescript-eslint/eslint-plugin": "^8.21.0",
-    "@typescript-eslint/parser": "^8.21.0",
-    "eslint": "^9.19.0",
-    "eslint-plugin-import": "^2.29.1",
-    "@types/mocha": "^10.0.10",
-    "@types/node": "~22.10.10",
-    "@types/vscode": "^1.96.0",
-    "@vscode/test-cli": "^0.0.10",
-    "@vscode/test-electron": "^2.4.1",
-    "@vscode/vsce": "^3.2.1",
-    "esbuild": "^0.24.0",
-    "npm-run-all2": "^5.0.0",
-    "typescript": "^5.7.2",
-    "webpack": "^5.97.1",
-    "webpack-cli": "^6.0.1"
-  },
-  "contributes": {
-    "configuration": {
-      "title": "Ai Commit Message",
-      "properties": {
-        "commitMessageGenerator.provider": {
-          "type": "string",
-          "enum": [
-            "openai",
-            "ollama"
-          ],
-          "default": "openai",
-          "description": "AI provider to use for commit message generation (Ollama or OpenAI-compatible API)"
-        },
-        "commitMessageGenerator.apiUrl": {
-          "type": "string",
-          "description": "Base URL for API endpoint. Defaults: Ollama - http://localhost:11434, OpenAI - http://localhost:1234/v1"
-        },
-        "commitMessageGenerator.model": {
-          "type": "string",
-          "description": "Model identifier. Defaults: Ollama - deepseek-r1:8b, OpenAI - deepseek-r1-distill-llama-8b"
-        },
-        "commitMessageGenerator.temperature": {
-          "type": "number",
-          "default": 0.7,
-          "description": "Controls randomness (0=deterministic, 1=creative)"
-        },
-        "commitMessageGenerator.maxTokens": {
-          "type": "number",
-          "default": 5000,
-          "description": "Maximum length of generated commit message in tokens"
-        },
-        "commitMessageGenerator.apiKey": {
-          "type": "string",
-          "description": "API key (if required by your OpenAI-compatible endpoint)",
-          "default": "your_api_key"
-        },
-        "commitMessageGenerator.types": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "default": [
-            "feat: A new feature",
-            "fix: A bug fix",
-            "chore: Maintenance tasks",
-            "docs: Documentation updates",
-            "style: Code style changes",
-            "refactor: Code refactoring",
-            "perf: Performance improvements",
-            "test: Adding tests"
-          ],
-          "description": "A list of commit types that the extension will recognize and use to categorize commit messages. You can customize this list based on your project's needs."
-        },
-        "commitMessageGenerator.scopes": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "default": [
-            "api",
-            "ui",
-            "core",
-            "auth",
-            "config",
-            "deps",
-            "docs",
-            "test",
-            "db",
-            "ci",
-            "security"
-          ],
-          "description": "A list of commit scopes that the extension will recognize and include in commit messages. Customize this list to align with the scopes relevant to your project."
-        }
-      }
-    },
-    "commands": [
-      {
-        "command": "extension.generateCommitMessage",
-        "title": "Generate Commit Message",
-        "icon": {
-          "dark": "extension/assets/icons/dark.svg",
-          "light": "extension/assets/icons/light.svg"
-        }
-      },
-      {
-        "command": "extension.showCommitLogs",
-        "title": "Show Commit Generation Logs"
-      }
-    ],
-    "menus": {
-      "scm/title": [
-        {
-          "command": "extension.generateCommitMessage",
-          "group": "navigation",
-          "when": "scmProvider == git"
-        }
-      ]
-    }
-  }
-  ,
-  "pnpm":{
-    "onlyBuiltDependencies": ["@vscode/vsce-sign", "esbuild", "keytar"]
-  }
+	"name": "ai-commit-messege",
+	"displayName": "Ai Commit Messege",
+	"publisher": "Its-Satyajit",
+	"description": "",
+	"version": "0.3.1",
+	"engines": {
+		"vscode": "^1.92.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Its-Satyajit/ai-commit-messege.git"
+	},
+	"categories": ["Other"],
+	"activationEvents": ["onStartupFinished", "onLanguage:git-commit"],
+	"icon": "extension/assets/icons/images/logo256.png",
+	"main": "./dist/extension.js",
+	"contributes": {
+		"configuration": {
+			"title": "Ai Commit Message",
+			"properties": {
+				"commitMessageGenerator.provider": {
+					"type": "string",
+					"enum": ["openai", "ollama"],
+					"default": "openai",
+					"description": "AI provider to use for commit message generation (Ollama or OpenAI-compatible API)"
+				},
+				"commitMessageGenerator.apiUrl": {
+					"type": "string",
+					"description": "Base URL for API endpoint. Defaults: Ollama - http://localhost:11434, OpenAI - http://localhost:1234/v1"
+				},
+				"commitMessageGenerator.model": {
+					"type": "string",
+					"description": "Model identifier. Defaults: Ollama - deepseek-r1:8b, OpenAI - deepseek-r1-distill-llama-8b"
+				},
+				"commitMessageGenerator.temperature": {
+					"type": "number",
+					"default": 0.7,
+					"description": "Controls randomness (0=deterministic, 1=creative)"
+				},
+				"commitMessageGenerator.maxTokens": {
+					"type": "number",
+					"default": 5000,
+					"description": "Maximum length of generated commit message in tokens"
+				},
+				"commitMessageGenerator.apiKey": {
+					"type": "string",
+					"description": "API key (if required by your OpenAI-compatible endpoint)",
+					"default": "your_api_key"
+				},
+				"commitMessageGenerator.types": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"default": [
+						"feat: A new feature",
+						"fix: A bug fix",
+						"chore: Maintenance tasks",
+						"docs: Documentation updates",
+						"style: Code style changes",
+						"refactor: Code refactoring",
+						"perf: Performance improvements",
+						"test: Adding tests"
+					],
+					"description": "A list of commit types that the extension will recognize and use to categorize commit messages. You can customize this list based on your project's needs."
+				},
+				"commitMessageGenerator.scopes": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"default": [
+						"api",
+						"ui",
+						"core",
+						"auth",
+						"config",
+						"deps",
+						"docs",
+						"test",
+						"db",
+						"ci",
+						"security"
+					],
+					"description": "A list of commit scopes that the extension will recognize and include in commit messages. Customize this list to align with the scopes relevant to your project."
+				}
+			}
+		},
+		"commands": [
+			{
+				"command": "extension.generateCommitMessage",
+				"title": "Generate Commit Message",
+				"icon": {
+					"dark": "extension/assets/icons/dark.svg",
+					"light": "extension/assets/icons/light.svg"
+				}
+			},
+			{
+				"command": "extension.showCommitLogs",
+				"title": "Show Commit Generation Logs"
+			}
+		],
+		"menus": {
+			"scm/title": [
+				{
+					"command": "extension.generateCommitMessage",
+					"group": "navigation",
+					"when": "scmProvider == git"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "pnpm run package",
+		"compile": "pnpm run check-types && pnpm run lint && node esbuild.js",
+		"watch": "npm-run-all -p watch:*",
+		"watch:esbuild": "node esbuild.js --watch",
+		"watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+		"package": "pnpm run check-types && pnpm run lint && node esbuild.js --production",
+		"compile-tests": "tsc -p . --outDir out",
+		"watch-tests": "tsc -p . -w --outDir out",
+		"pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
+		"check-types": "tsc --noEmit",
+		"lint": "eslint src --ext ts",
+		"test": "vscode-test",
+		"publish:patch": "npx vsce publish patch",
+		"publish:minor": "npx vsce publish minor",
+		"publish:major": "npx vsce publish major",
+		"create:package": "vsce package"
+	},
+	"devDependencies": {
+		"@types/node": "^22.10.10",
+		"@types/vscode": "^1.92.0",
+		"@typescript-eslint/eslint-plugin": "^7.18.0 ",
+		"@typescript-eslint/parser": "^7.18.0 ",
+		"@vscode/test-cli": "^0.0.10",
+		"@vscode/vsce": "^3.0.0",
+		"esbuild": "^0.23.1",
+		"eslint": "^8.57.0",
+		"typescript": "^5.7.3"
+	}
 }

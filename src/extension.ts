@@ -1,14 +1,11 @@
-import * as vscode from 'vscode';
+import * as vscode from "vscode";
 
-import {
-  getSystemPrompt,
-  loadConfig,
-} from './config';
-import { HttpClient } from './core/httpClient';
-import { GitDiffProvider } from './git/diffProvider';
-import { OllamaProvider } from './providers/ollama';
-import { OpenAIProvider } from './providers/openai';
-import { StreamManager } from './stream/manager';
+import { getSystemPrompt, loadConfig } from "./config";
+import { HttpClient } from "./core/httpClient";
+import { GitDiffProvider } from "./git/diffProvider";
+import { OllamaProvider } from "./providers/ollama";
+import { OpenAIProvider } from "./providers/openai";
+import { StreamManager } from "./stream/manager";
 
 export function activate(context: vscode.ExtensionContext) {
 	const outputChannel = vscode.window.createOutputChannel(
