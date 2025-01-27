@@ -1,119 +1,60 @@
-name: VS Code Extension Release
-
+name: Build and Deploy Extension
 on:
+  push:
+    tags:
+      - "v*.*.*"
   workflow_dispatch:
-    inputs:
-      releaseType:
-        description: 'Semver release type (patch, minor, major)'
-        required: true
-        default: 'patch'
-        type: choice
-        options:
-          - patch
-          - minor
-          - major
-      releaseChannel:
-        description: 'Release channel'
-        required: true
-        default: 'stable'
-        type: choice
-        options:
-          - stable
-          - edge
-      publishMarketplace:
-        description: 'Publish to VS Code Marketplace?'
-        required: true
-        default: 'yes'
-        type: choice
-        options:
-          - yes
-          - no
-      publishOpenVSX:
-        description: 'Publish to OpenVSX?'
-        required: true
-        default: 'yes'
-        type: choice
-        options:
-          - yes
-          - no
 
 jobs:
-  release:
+  build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-      - name: Setup Node.js 22
-        uses: actions/setup-node@v3
+      # 1. Install pnpm FIRST
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      # 2. Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'npm'
+          cache: "pnpm"
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build Extension
-        run: npm run package
-
-      - name: Generate Changelog
-        run: |
-          if git describe --tags --abbrev=0 &> /dev/null; then
-            git log $(git describe --tags --abbrev=0)..HEAD --oneline > CHANGELOG.md
-          else
-            git log --oneline > CHANGELOG.md
-          fi
-          cat CHANGELOG.md
-
+      # 3. Configure Git
       - name: Configure Git
         run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
 
-      - name: Calculate Version
-        id: version
+      # 4. Install dependencies
+      - name: Install Dependencies
+        run: pnpm install
+
+      # 5. Clean node_modules (fixed indentation)
+      - name: Clean node_modules
         run: |
-          CURRENT_VERSION=$(node -p "require('./package.json').version")
-          if [ "${{ github.event.inputs.releaseChannel }}" == "edge" ]; then
-            NEW_VERSION=$(npx semver $CURRENT_VERSION -i pre${{ github.event.inputs.releaseType }} --preid edge)
-          else
-            NEW_VERSION=$(npx semver $CURRENT_VERSION -i ${{ github.event.inputs.releaseType }})
-          fi
-          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_ENV
-          echo "VERSION=$NEW_VERSION" >> $GITHUB_OUTPUT
+          pnpm install --production=false
+          pnpm prune --production
 
-      - name: Update Version
-        run: |
-          npm version $NEW_VERSION --no-git-tag-version
-          git add package.json package-lock.json
-          git commit -m "chore: release v$NEW_VERSION"
-          git tag v$NEW_VERSION
-
+      # 6. Package extension
       - name: Package Extension
-        run: npx vsce package -o ai-commit-message-$NEW_VERSION.vsix
+        run: |
+          pnpm add -g @vscode/vsce
+          vsce package --no-dependencies
 
-      - name: Publish to VS Code Marketplace
-        if: ${{ github.event.inputs.publishMarketplace == 'yes' }}
-        run: npx vsce publish -p ${{ secrets.VS_MARKETPLACE_TOKEN }} --packagePath ai-commit-message-$NEW_VERSION.vsix
+      # 7. Publish to VS Marketplace
+      - name: Publish to Visual Studio Marketplace
+        env:
+          VSCE_PAT: ${{ secrets.VS_MARKETPLACE_TOKEN }}
+        run: pnpm exec vsce publish --pat $VSCE_PAT
 
-      - name: Publish to OpenVSX
-        if: ${{ github.event.inputs.publishOpenVSX == 'yes' }}
-        uses: HaaLeo/publish-vscode-extension@v1
-        with:
-          pat: ${{ secrets.OPEN_VSX_TOKEN }}
-          extensionFile: ai-commit-message-$NEW_VERSION.vsix
-          preRelease: ${{ github.event.inputs.releaseChannel == 'edge' }}
-
-      - name: Push Changes
-        run: git push origin main --tags
-
-      - name: Create Release
-        uses: ncipollo/release-action@v1
-        with:
-          tag: v${{ env.NEW_VERSION }}
-          artifacts: 'ai-commit-message-*.vsix'
-          bodyFile: CHANGELOG.md
-          prerelease: ${{ github.event.inputs.releaseChannel == 'edge' }}
+      # 8. Publish to Open VSX
+      - name: Publish to Open VSX Registry
+        env:
+          OVSX_PAT: ${{ secrets.OPEN_VSX_TOKEN }}
+        run: npx ovsx publish --pat $OVSX_PAT
