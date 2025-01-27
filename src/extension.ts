@@ -1,39 +1,72 @@
 import * as vscode from 'vscode';
 
-import { generateCommitMessage } from './commitMessageGenerator';
+import { getSystemPrompt, loadConfig } from "./config";
+import { HttpClient } from "./core/httpClient";
+import { GitDiffProvider } from "./git/diffProvider";
+import { OllamaProvider } from "./providers/ollama";
+import { OpenAIProvider } from "./providers/openai";
+import { StreamManager } from "./stream/manager";
 
 export function activate(context: vscode.ExtensionContext) {
-    let disposable = vscode.commands.registerCommand('extension.generateCommitMessage', async () => {
-        const gitExtension = vscode.extensions.getExtension('vscode.git')?.exports;
-        const api = gitExtension?.getAPI(1);
-        const repository = api?.repositories[0];
+	const outputChannel = vscode.window.createOutputChannel(
+		"AI Commit Message Generator",
+	);
+	context.subscriptions.push(outputChannel);
 
-        if (!repository) {
-            vscode.window.showErrorMessage('No active Git repository found.');
-            return;
-        }
+	const streamManager = new StreamManager(outputChannel);
+	const diffProvider = new GitDiffProvider(outputChannel);
 
-        const progressOptions: vscode.ProgressOptions = {
-            location: vscode.ProgressLocation.Notification,
-            title: 'Generating commit message...',
-            cancellable: false,
-        };
+	context.subscriptions.push(
+		vscode.commands.registerCommand(
+			"extension.generateCommitMessage",
+			async () => {
+				try {
+					const config = loadConfig();
+					const diff = await diffProvider.getStagedDiff();
 
-        await vscode.window.withProgress(progressOptions, async (progress) => {
-            try {
-                const commitMessage = await generateCommitMessage();
-                if (commitMessage) {
-                    repository.inputBox.value = commitMessage;
-                } else {
-                    vscode.window.showInformationMessage('No changes detected or message generation failed.');
-                }
-            } catch (error) {
-                vscode.window.showErrorMessage(`An unexpected error occurred: ${(error as Error).message}`);
-            }
-        });
-    });
+					const client =
+						config.provider === "openai"
+							? new OpenAIProvider(
+									new HttpClient(config.baseUrl || "http://localhost:1234/v1", {
+										Authorization: `Bearer ${config.apiKey}`,
+									}),
+									outputChannel,
+								)
+							: new OllamaProvider(
+									new HttpClient(config.baseUrl || "http://localhost:11434"),
+									outputChannel,
+								);
 
-    context.subscriptions.push(disposable);
+					await vscode.window.withProgress(
+						{
+							location: vscode.ProgressLocation.Notification,
+							title: "Generating commit message...",
+							cancellable: true,
+						},
+						async (progress, token) => {
+							token.onCancellationRequested(() => streamManager.abort());
+
+							return streamManager.handleStream(
+								client.createStream(
+									diff,
+									getSystemPrompt(config.types, config.scopes),
+									{
+										model: config.model,
+										temperature: config.temperature,
+										maxTokens: config.maxTokens,
+									},
+								),
+								(content) => progress.report({ message: content }),
+							);
+						},
+					);
+				} catch (error) {
+					outputChannel.appendLine(`🔥 Critical error: ${error}`);
+					vscode.window.showErrorMessage(
+						error instanceof Error ? error.message : "Generation failed",
+					);
+				}
+			},
+		),
+	);
 }
-
-export function deactivate() {}
