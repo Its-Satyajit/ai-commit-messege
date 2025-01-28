@@ -16,11 +16,11 @@
 commits using open-source models. Privacy-focused, offline-capable solution for
 developers.
 
-|                          ![Workflow Demo 1](public/a.png)                           | ![Workflow Demo 2](public/b.png) |
-| :---------------------------------------------------------------------------------: | :------------------------------: |
+| ![Workflow Demo 1](public/a.png) | ![Workflow Demo 2](public/b.png) |
+| :------------------------------: | :------------------------------: |
 
 <div style="text-align: center;">
- <em>Demo showing commit message generation process (left) and settings (right)</em>                                   
+ <em>Demo showing commit message generation process (left) and settings (right)</em>
 </div>
 
 ## Features 🌟
@@ -81,9 +81,10 @@ _* Metrics from personal testing on mobile GTX 1050 Ti (Q4_K_M quantization)_
 
 ```text
         Speed vs Quality Tradeoff
+
         ▲
         │ 
-Quality │.....█████ (deepseek)
+Quality │.....█████ (deepseek-r1)
         │...███     (llama3) 
         │.██▌       (phi-3)
         └───────────────────▶ Time
@@ -100,11 +101,14 @@ curl -fsSL https://ollama.com/install.sh | sh
 ollama serve
 ```
 
+_* For more info, visit [Ollama](https://ollama.com/)_
+
 **Option 2: LM Studio (Advanced)**
 
 ```bash
 lmstudio serve --model ./models/deepseek-r1.gguf --gpulayers 20
 ```
+_* For more info, visit [LM Studio](https://lmstudio.ai/)_
 
 ### Extension Settings
 
@@ -121,17 +125,12 @@ lmstudio serve --model ./models/deepseek-r1.gguf --gpulayers 20
     "fix: A bug fix",
     "chore: Maintenance tasks",
     "docs: Documentation updates",
-    "style: Code style changes",
-    "refactor: Code refactoring",
-    "perf: Performance improvements",
-    "test: Adding tests"
   ],
   "commitMessageGenerator.scopes": ["ui", "api", "config"]
-  
 }
 ```
 
-## Optimization Guide 🚄
+## Optimization Guide 
 
 ### GPU Acceleration
 
@@ -196,15 +195,7 @@ export GGML_CUDA_OFFLOAD=20
 
 ### Neutrality Statement
 
-```text
-This project is not affiliated with, endorsed by, or sponsored by:
-- Ollama
-- LM Studio
-- Microsoft
-- Any model creators
-
-Mentioned tools/models are personal preferences based on technical merits.
-```
+f
 
 ## Contributing 🤝
 
