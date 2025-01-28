@@ -64,6 +64,8 @@ Storage: NVMe SSD
 - **CPU**: 4-core (2015+)
 - **RAM**: 8GB
 - **Storage**: SSD
+- **Node**: ^22
+- Vscode: ^1.92.0
 
 ## Model Compatibility 🧠
 
