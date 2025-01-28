@@ -22,6 +22,7 @@ developers.
 <div style="text-align: center;">
  <em>Demo showing commit message generation process (left) and settings (right)</em>                                   
 </div>
+
 ## Features 🌟
 
 - **🔒 Privacy First** - No data leaves your machine
