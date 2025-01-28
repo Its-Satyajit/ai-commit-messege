@@ -195,7 +195,14 @@ export GGML_CUDA_OFFLOAD=20
 
 ### Neutrality Statement
 
-f
+```text
+This project and I am not affiliated with, endorsed by, or sponsored by:
+- Ollama
+- LM Studio
+- Any model creators
+
+Mentioned tools/models are personal preferences based on technical merits.
+```
 
 ## Contributing 🤝
 
