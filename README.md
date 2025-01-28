@@ -1,4 +1,3 @@
-
 # AI Commit Message Generator for VS Code 🤖✨
 
 <div style="text-align: center;">
@@ -13,14 +12,16 @@
   </a>
 </div>
 
-**Local AI Commit Message Generation** - Transform code diffs into conventional commits using open-source models. Privacy-focused, offline-capable solution for developers.
+**Local AI Commit Message Generation** - Transform code diffs into conventional
+commits using open-source models. Privacy-focused, offline-capable solution for
+developers.
 
-<div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
-  <img src="public/a.png" alt="Workflow Demo" style="width:50%; height: auto;">
-  <img src="public/b.png" alt="Workflow Demo" style="width:50%; height: auto;">
+|                          ![Workflow Demo 1](public/a.png)                           | ![Workflow Demo 2](public/b.png) |
+| :---------------------------------------------------------------------------------: | :------------------------------: |
+
+<div style="text-align: center;">
+ <em>Demo showing commit message generation process (left) and settings (right)</em>                                   
 </div>
-<p style="text-align: center;"><em>Demo showing commit message generation process (left) and settings (right)</em></p>
-
 ## Features 🌟
 
 - **🔒 Privacy First** - No data leaves your machine
@@ -39,7 +40,7 @@
    ```bash
    # For CPU-focused systems
    ollama pull phi-3
-   
+
    # For GPU-equipped machines
    ollama pull deepseek-r1:8b
    ```
@@ -48,6 +49,7 @@
 ## Hardware Requirements 🖥️
 
 ### Tested Environment
+
 ```yaml
 OS: openSUSE Tumbleweed
 CPU: Intel i7-8750H (6c/12t @4.1GHz)
@@ -57,6 +59,7 @@ Storage: NVMe SSD
 ```
 
 ### Minimum Recommendations
+
 - **CPU**: 4-core (2015+)
 - **RAM**: 8GB
 - **Storage**: SSD
@@ -64,51 +67,71 @@ Storage: NVMe SSD
 ## Model Compatibility 🧠
 
 ### Performance Characteristics
-| Model Family       | Example Models   | Speed*  | Quality* | Use When...                |
-|--------------------|------------------|---------|----------|----------------------------|
-| Lightweight        | `phi-3`, `mistral` | 22 t/s | ██▌      | Quick iterations           |
-| Balanced           | `llama3`, `qwen` | 14 t/s | ███▎     | Daily development          |
-| Quality-Focused    | `deepseek-r1`    | 7 t/s  | ████▋    | Complex changes            |
+
+| Model Family    | Example Models     | Speed* | Quality* | Use When...       |
+| --------------- | ------------------ | ------ | -------- | ----------------- |
+| Lightweight     | `phi-3`, `mistral` | 22 t/s | ██▌      | Quick iterations  |
+| Balanced        | `llama3`, `qwen`   | 14 t/s | ███▎     | Daily development |
+| Quality-Focused | `deepseek-r1`      | 7 t/s  | ████▋    | Complex changes   |
 
 _* Metrics from personal testing on mobile GTX 1050 Ti (Q4_K_M quantization)_
 
 ```text
-          Speed vs Quality Tradeoff
-          ▲
-          │ 
-  Quality │.....█████ (deepseek)
-          │...███     (llama3) 
-          │.██▌       (phi-3)
-          └───────────────────▶ Speed
+        Speed vs Quality Tradeoff
+        ▲
+        │ 
+Quality │.....█████ (deepseek)
+        │...███     (llama3) 
+        │.██▌       (phi-3)
+        └───────────────────▶ Speed
 ```
 
 ## Configuration ⚙️
 
 ### Backend Setup
+
 **Option 1: Ollama (Simplest)**
+
 ```bash
 curl -fsSL https://ollama.com/install.sh | sh
 ollama serve
 ```
 
 **Option 2: LM Studio (Advanced)**
+
 ```bash
 lmstudio serve --model ./models/deepseek-r1.gguf --gpulayers 20
 ```
 
 ### Extension Settings
+
 ```jsonc
 {
   "commitMessageGenerator.provider": "ollama",
+  "commitMessageGenerator.apiUrl": "http://localhost:11434",
   "commitMessageGenerator.model": "deepseek-r1:8b",
   "commitMessageGenerator.temperature": 0.7,
+  "commitMessageGenerator.maxTokens": 5000,
+  "commitMessageGenerator.apiKey": "your_api_key (if required by your OpenAI-compatible/ollama endpoint)",
+  "commitMessageGenerator.types": [
+    "feat: A new feature",
+    "fix: A bug fix",
+    "chore: Maintenance tasks",
+    "docs: Documentation updates",
+    "style: Code style changes",
+    "refactor: Code refactoring",
+    "perf: Performance improvements",
+    "test: Adding tests"
+  ],
   "commitMessageGenerator.scopes": ["ui", "api", "config"]
+  
 }
 ```
 
 ## Optimization Guide 🚄
 
 ### GPU Acceleration
+
 ```bash
 # NVIDIA Settings
 export OLLAMA_GPUS=1
@@ -123,6 +146,7 @@ export GGML_CUDA_OFFLOAD=20
 ```
 
 ### Performance Tips
+
 - Start with `phi-3` for quick feedback
 - Switch to `deepseek-r1` for final commits
 - Use `--no-mmap` if experiencing slowdowns
@@ -130,11 +154,11 @@ export GGML_CUDA_OFFLOAD=20
 
 ## Troubleshooting 🔧
 
-| Issue               | First Steps                      | Advanced Fixes              |
-|---------------------|----------------------------------|-----------------------------|
-| Slow generation     | 1. Check CPU usage<br>2. Verify quantization | Use `--no-mmap` flag        |
-| Model loading fails | 1. Confirm SHA256 checksum<br>2. Check disk space | Try different quantization |
-| GPU not detected    | 1. Verify drivers<br>2. Check CUDA version | Set `CUDA_VISIBLE_DEVICES=0` |
+| Issue               | First Steps                                       | Advanced Fixes               |
+| ------------------- | ------------------------------------------------- | ---------------------------- |
+| Slow generation     | 1. Check CPU usage<br>2. Verify quantization      | Use `--no-mmap` flag         |
+| Model loading fails | 1. Confirm SHA256 checksum<br>2. Check disk space | Try different quantization   |
+| GPU not detected    | 1. Verify drivers<br>2. Check CUDA version        | Set `CUDA_VISIBLE_DEVICES=0` |
 
 ## FAQ ❓
 
@@ -145,25 +169,30 @@ export GGML_CUDA_OFFLOAD=20
 - **Offline Use**: Works without internet
 - **Cost**: No API fees
 - **Customization**: Use models tailored to your needs
+
 </details>
 
 <details>
 <summary>How to choose between models?</summary>
 
 **Quick Sessions** → `phi-3`/`mistral`:
+
 - Prototyping
 - Personal projects
 - Low-resource machines
 
 **Important Commits** → `deepseek-r1`:
+
 - Production code
 - Team projects
 - Complex refactors
+
 </details>
 
 ## Legal & Ethics
 
 ### Neutrality Statement
+
 ```text
 This project is not affiliated with, endorsed by, or sponsored by:
 - Ollama
@@ -190,11 +219,14 @@ Mentioned tools/models are personal preferences based on technical merits.
 [Full contribution guidelines](CONTRIBUTING.md)
 
 ## License 📄
+
 MIT License - [View License](LICENSE)
 
 ---
 
-**Built by Developers, for Developers** - From quick fixes to production-grade commits 💻⚡
+**Built by Developers, for Developers** - From quick fixes to production-grade
+commits 💻⚡
 
 [Report Issue](https://github.com/Its-Satyajit/ai-commit-message/issues)
+
 <!-- [Discuss Ideas](https://github.com/Its-Satyajit/ai-commit-message/discussions) -->
