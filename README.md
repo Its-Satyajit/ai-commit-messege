@@ -83,7 +83,7 @@ _* Metrics from personal testing on mobile GTX 1050 Ti (Q4_K_M quantization)_
 Quality │.....█████ (deepseek)
         │...███     (llama3) 
         │.██▌       (phi-3)
-        └───────────────────▶ Speed
+        └───────────────────▶ Time
 ```
 
 ## Configuration ⚙️
