@@ -1,6 +1,6 @@
 {
-  "name": "ai-commit-messege",
-  "displayName": "Ai Commit Messege",
+  "name": "ai-commit-message",
+  "displayName": "Ai Commit Message",
   "publisher": "Its-Satyajit",
   "description": "",
   "version": "0.4.0",
@@ -62,14 +62,14 @@
             "type": "string"
           },
           "default": [
-            "feat: A new feature",
-            "fix: A bug fix",
-            "chore: Maintenance tasks",
-            "docs: Documentation updates",
-            "style: Code style changes",
-            "refactor: Code refactoring",
-            "perf: Performance improvements",
-            "test: Adding tests"
+            "feat",
+            "fix",
+            "chore",
+            "docs",
+            "style",
+            "refactor",
+            "perf",
+            "test"
           ],
           "description": "A list of commit types that the extension will recognize and use to categorize commit messages. You can customize this list based on your project's needs."
         },
