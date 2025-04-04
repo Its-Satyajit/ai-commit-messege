@@ -35,7 +35,7 @@ developers.
 
 1. Install extension:
    ```bash
-   code --install-extension Its-Satyajit.ai-commit-message
+   code --install-extension Its-Satyajit.ai-commit-messages
    ```
 2. Set up AI backend:
    ```bash
