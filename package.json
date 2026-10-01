@@ -148,7 +148,7 @@
     "@types/vscode": "^1.92.0",
     "@typescript-eslint/eslint-plugin": "^7.18.0 ",
     "@typescript-eslint/parser": "^7.18.0 ",
-    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-cli": "^0.0.15",
     "@vscode/vsce": "^3.0.0",
     "esbuild": "^0.23.1",
     "eslint": "^8.57.0",
